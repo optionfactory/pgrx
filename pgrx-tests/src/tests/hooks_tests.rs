@@ -16,67 +16,68 @@ mod tests {
     use pgrx::hooks::*;
     use pgrx::prelude::*;
     use pgrx::PgList;
+    use std::cell::RefCell;
 
     #[pg_test]
     unsafe fn test_callbacks() {
         use pgrx::pg_sys::*;
 
         struct TestHook {
-            events: u32,
+            events: RefCell<u32>,
         }
         impl PgHooks for TestHook {
             /// Hook before the logs are being processed by PostgreSQL itself
             fn emit_log(
-                &mut self,
+                &self,
                 error_data: PgBox<pg_sys::ErrorData>,
                 prev_hook: fn(error_data: PgBox<pg_sys::ErrorData>) -> HookResult<()>,
             ) -> HookResult<()> {
-                self.events += 1;
+                self.events.replace_with(|&mut c| c + 1);
                 prev_hook(error_data)
             }
 
             fn executor_start(
-                &mut self,
+                &self,
                 query_desc: PgBox<QueryDesc>,
                 eflags: i32,
                 prev_hook: fn(PgBox<QueryDesc>, i32) -> HookResult<()>,
             ) -> HookResult<()> {
-                self.events += 1;
+                self.events.replace_with(|&mut c| c + 1);
                 prev_hook(query_desc, eflags)
             }
 
             fn executor_run(
-                &mut self,
+                &self,
                 query_desc: PgBox<QueryDesc>,
                 direction: i32,
                 count: u64,
                 execute_once: bool,
                 prev_hook: fn(PgBox<QueryDesc>, i32, u64, bool) -> HookResult<()>,
             ) -> HookResult<()> {
-                self.events += 1;
+                self.events.replace_with(|&mut c| c + 1);
                 prev_hook(query_desc, direction, count, execute_once)
             }
 
             fn executor_finish(
-                &mut self,
+                &self,
                 query_desc: PgBox<QueryDesc>,
                 prev_hook: fn(PgBox<QueryDesc>) -> HookResult<()>,
             ) -> HookResult<()> {
-                self.events += 1;
+                self.events.replace_with(|&mut c| c + 1);
                 prev_hook(query_desc)
             }
 
             fn executor_end(
-                &mut self,
+                &self,
                 query_desc: PgBox<QueryDesc>,
                 prev_hook: fn(PgBox<QueryDesc>) -> HookResult<()>,
             ) -> HookResult<()> {
-                self.events += 1;
+                self.events.replace_with(|&mut c| c + 1);
                 prev_hook(query_desc)
             }
 
             fn executor_check_perms(
-                &mut self,
+                &self,
                 range_table: PgList<*mut RangeTblEntry>,
                 rte_perm_infos: Option<*mut pg_sys::List>,
                 ereport_on_violation: bool,
@@ -86,12 +87,12 @@ mod tests {
                     bool,
                 ) -> HookResult<bool>,
             ) -> HookResult<bool> {
-                self.events += 1;
+                self.events.replace_with(|&mut c| c + 1);
                 prev_hook(range_table, rte_perm_infos, ereport_on_violation)
             }
 
             fn planner(
-                &mut self,
+                &self,
                 parse: PgBox<Query>,
                 query_string: *const std::os::raw::c_char,
                 cursor_options: i32,
@@ -103,12 +104,12 @@ mod tests {
                     PgBox<ParamListInfoData>,
                 ) -> HookResult<*mut PlannedStmt>,
             ) -> HookResult<*mut PlannedStmt> {
-                self.events += 1;
+                self.events.replace_with(|&mut c| c + 1);
                 prev_hook(parse, query_string, cursor_options, bound_params)
             }
 
             fn post_parse_analyze(
-                &mut self,
+                &self,
                 parse_state: PgBox<pg_sys::ParseState>,
                 query: PgBox<pg_sys::Query>,
                 jumble_state: Option<PgBox<JumbleState>>,
@@ -118,17 +119,17 @@ mod tests {
                     jumble_state: Option<PgBox<JumbleState>>,
                 ) -> HookResult<()>,
             ) -> HookResult<()> {
-                self.events += 1;
+                self.events.replace_with(|&mut c| c + 1);
                 prev_hook(parse_state, query, jumble_state)
             }
         }
 
-        static mut HOOK: TestHook = TestHook { events: 0 };
-        pgrx::hooks::register_hook(&mut HOOK);
+        static mut HOOK: TestHook = TestHook { events: RefCell::new(0) };
+        pgrx::hooks::register_hook(&HOOK);
         // To trigger the emit_log hook, we need something to log.
         // We therefore ensure the select statement will be logged.
         Spi::run("SET local log_statement to 'all'; SELECT 1").expect("SPI failed");
-        assert_eq!(8, HOOK.events);
+        assert_eq!(8, HOOK.events.take());
 
         // TODO:  it'd be nice to also test that .commit() and .abort() also get called
         //    but I don't see how to do that since we're running *inside* a transaction here
