@@ -1983,6 +1983,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "parallel_scan_lwlock"
+version = "0.0.0"
+dependencies = [
+ "pgrx",
+ "pgrx-tests",
+]
+
+[[package]]
 name = "parking_lot"
 version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
