@@ -219,7 +219,7 @@ pub mod dsm {
     /// After the lock is initialized on the DSM, it must be registered in every involved process
     /// with [DsmLwLock::register], which returns a [DsmLwLockHandle] that can be stored in the
     /// process local memory. The handle provides methods to obtain
-    /// [DsmLwLockHandle::exclusive](exclusive) or [DsmLwLockHandle::shared](shared) lock guards.
+    /// [exclusive](DsmLwLockHandle::exclusive) or [shared](DsmLwLockHandle::shared) lock guards.
     /// When dropped, a guard releases the lock. Quoting the PostgreSQL documentation, each process
     /// using the tranche must register it separately, as "dynamic shared memory segments aren't
     /// guaranteed to be mapped at the same address in all coordinating backends, so storing the
