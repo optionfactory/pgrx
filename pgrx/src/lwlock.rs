@@ -237,7 +237,7 @@ pub mod dsm {
         handle: *mut DsmLwLock<T>,
     }
 
-    impl<T: crate::PGRXSharedMemory> DsmLwLock<T> { // REVIEW: perchè lwlock e tranche assieme?
+    impl<T: crate::PGRXSharedMemory> DsmLwLock<T> {
 
         /// Memory size in bytes required to store a lock instance, along its wrapped value.
         pub const fn mem_size() -> usize {
@@ -251,20 +251,32 @@ pub mod dsm {
         /// Use parsimoniously, for locks store tranche IDs in 16-bit unsigned integers. The user
         /// should not request a tranche ID per LWLock instance, but per LWLock family instead,
         /// which groups instances of locks created for the same purpose.
+        ///
+        /// # Panics
+        ///
+        /// This function checks whether the next tranche ID exceeds the unsigned 16-bit boundary,
+        /// to avoid subtle errors inside PostgreSQL LWLock API that may associate a new lock to a
+        /// completely different tranche because of the ID truncation.
         pub fn new_tranche_id() -> c_int {
-            unsafe { crate::pg_sys::LWLockNewTrancheId() }
-        } // REVIEW: maybe check if it fits in an u16
+            let tranche_id = unsafe { crate::pg_sys::LWLockNewTrancheId() };
+            if tranche_id > (u16::MAX as i32) {
+                panic!("all valid LWLock tranche IDs have been consumed: this or any other extension is probably requesting a new tranche ID on every dynamic LWLock creation");
+            }
+            tranche_id
+        }
 
         /// Initialize the DSM with a lock and a copy of the wrapped value.
         ///
         /// # Safety
         ///
         /// * `dsm` must not be null.
+        /// * `dsm` must be aligned.
         /// * `dsm` must have at least [Self::mem_size] space.
         /// * `data` must not be null.
         /// * `data` must not point to an address inside the `dsm` memory allocation.
         pub unsafe fn init(dsm: *mut c_void, tranche_id: c_int, data: *const T) {
-            let dsm = dsm as *mut DsmLwLock<T>; // REVIEW: alignment?
+            assert!(dsm.is_aligned(), "dynamic shared memory is not aligned");
+            let dsm = dsm as *mut DsmLwLock<T>;
             (&raw mut (*dsm).lock).write(crate::pg_sys::LWLock::default());
             crate::pg_sys::LWLockInitialize(&raw mut (*dsm).lock, tranche_id);
             (&raw mut (*dsm).data).copy_from_nonoverlapping(data, 1);
@@ -274,8 +286,9 @@ pub mod dsm {
         ///
         /// # Safety
         ///
-        /// * `dsm` was already initialized with [Self::init].
-        pub unsafe fn register(dsm: *mut c_void, name: &'static CStr) -> DsmLwLockHandle<T> { // REVIEW: alignment? // REVIEW: why registering a tranche name from a lock?
+        /// * `dsm` was already initialized with [Self::init] (and therefore all its safety requirements are met).
+        pub unsafe fn register(dsm: *mut c_void, name: &'static CStr) -> DsmLwLockHandle<T> {
+            assert!(dsm.is_aligned(), "dynamic shared memory is not aligned");
             let dsm = dsm as *mut DsmLwLock<T>;
             crate::pg_sys::LWLockRegisterTranche((*dsm).lock.tranche as _, name.as_ptr());
             DsmLwLockHandle { handle: dsm }
@@ -286,7 +299,7 @@ pub mod dsm {
 
         /// Obtain a shared lock (which comes with `&T` access).
         pub fn shared(&self) -> super::PgLwLockShareGuard<'_, T> {
-            assert!(!self.handle.is_null(), "Unregistered DSM LWLock handle");
+            assert!(!self.handle.is_null(), "unregistered DSM LWLock handle");
             unsafe {
                 let lock_ptr = (&raw mut (*self.handle).lock);
                 crate::pg_sys::LWLockAcquire(lock_ptr, crate::pg_sys::LWLockMode::LW_SHARED);
@@ -299,7 +312,7 @@ pub mod dsm {
 
         /// Obtain an exclusive lock (which comes with `&mut T` access).
         pub fn exclusive(&self) -> super::PgLwLockExclusiveGuard<'_, T> {
-            assert!(!self.handle.is_null(), "Unregistered DSM LWLock handle");
+            assert!(!self.handle.is_null(), "unregistered DSM LWLock handle");
             unsafe {
                 let lock_ptr = (&raw mut (*self.handle).lock);
                 crate::pg_sys::LWLockAcquire(lock_ptr, crate::pg_sys::LWLockMode::LW_EXCLUSIVE);
@@ -332,13 +345,14 @@ pub mod dsm {
     /// ```
     ///
     /// This type provides convenience methods for initializing and registering LWLocks on the DSM.
-    /// Safety requirements are those specified in the [DsmLwLock] relative functions.
+    /// Safety requirements are those specified in the respective [DsmLwLock] functions.
     pub struct DsmLwLockTranche {
         name: &'static CStr,
-        lock: UnsafeCell<*mut crate::pg_sys::LWLock>,
+        lock: UnsafeCell<*mut crate::pg_sys::LWLock>, // TODO: Option<NonNull<_>>
     }
 
-    unsafe impl Sync for DsmLwLockTranche {} // REVIEW: why?
+    /// UnsafeCell cannot be shared between threads safely, we allow its use within static globals.
+    unsafe impl Sync for DsmLwLockTranche {}
 
     impl DsmLwLockTranche {
 
@@ -360,12 +374,14 @@ pub mod dsm {
         /// # Panics
         ///
         /// This method must not be invoked on an uninitialized tranche, otherwise it will panic.
-        unsafe fn tranche_id(&self) -> c_int { // REVIEW: is it really unsafe?
-            let lock = *self.lock.get();
-            if lock.is_null() { // REVIEW: what if we are an enum Uninit / Init?
-                panic!("Uninitialized DSM LWLock tranche (use pg_shmem_init!() in _PG_init() to initialize it)");
+        pub fn tranche_id(&self) -> c_int {
+            unsafe {
+                let lock = *self.lock.get();
+                if lock.is_null() {
+                    panic!("uninitialized DSM LWLock tranche (use pg_shmem_init!() in _PG_init() to initialize it)");
+                }
+                (*lock).tranche as c_int
             }
-            (*lock).tranche as c_int
         }
 
         /// Initialize the DSM with a lock and a copy of the wrapped value.
@@ -377,14 +393,14 @@ pub mod dsm {
         /// * `data` must not be null.
         /// * `data` must not point to an address inside the `dsm` memory allocation.
         pub unsafe fn init<T>(&self, dsm: *mut c_void, data: *const T) where T: crate::PGRXSharedMemory {
-            DsmLwLock::<T>::init(dsm, self.tranche_id(), data) // REVIEW: alignment
+            DsmLwLock::<T>::init(dsm, self.tranche_id(), data)
         }
 
         /// Register the lock tranche to associate its ID with a name.
         ///
         /// # Safety
         ///
-        /// * `dsm` was already initialized with [Self::init].
+        /// * `dsm` was already initialized with [Self::init] (and therefore all its safety requirements are met).
         pub unsafe fn register<T>(&self, dsm: *mut c_void) -> DsmLwLockHandle<T> where T: crate::PGRXSharedMemory {
             DsmLwLock::<T>::register(dsm, self.name)
         }
@@ -638,15 +654,17 @@ pub mod scan {
         ///
         /// # Panics
         ///
-        /// This method panics if called twice.
-        pub fn initialize_dsm_and_register_leader(&mut self, dsm: *mut c_void) {
-            // REVIEW: can't be safe
+        /// This method panics if it or [Self::register_parallel_worker] were already called.
+        ///
+        /// # Safety
+        ///
+        /// * `dsm` must not be null.
+        /// * `dsm` must have at least [ParallelScanLwLock::mem_size] space.
+        pub unsafe fn initialize_dsm_and_register_leader(&mut self, dsm: *mut c_void) {
             match &self.data {
                 ParallelScanSharedState::Local(value) => {
-                    unsafe {
-                        self.tranche.init(dsm, <A as Borrow<T>>::borrow(value) as *const T);
-                        self.data = ParallelScanSharedState::Shared(self.tranche.register(dsm));
-                    }
+                    self.tranche.init(dsm, <A as Borrow<T>>::borrow(value) as *const T);
+                    self.data = ParallelScanSharedState::Shared(self.tranche.register(dsm));
                 },
                 ParallelScanSharedState::Shared(_) => {
                     panic!("DSM LWLock already initialized");
@@ -656,10 +674,13 @@ pub mod scan {
 
         /// To be called by parallel worker processes of a parallel foreign scan within the
         /// `pgrx_initialize_worker_foreign_scan` function.
-        pub fn register_parallel_worker(&mut self, dsm: *mut c_void) {
-            unsafe { // REVIEW: can't be safe
-                self.data = ParallelScanSharedState::Shared(self.tranche.register(dsm));
-            }
+        ///
+        /// # Safety
+        ///
+        /// * The leader process must have invoked [Self::initialize_dsm_and_register_leader] on
+        ///   `dsm` first (and therefore all its safety requirements are met).
+        pub unsafe fn register_parallel_worker(&mut self, dsm: *mut c_void) {
+            self.data = ParallelScanSharedState::Shared(self.tranche.register(dsm));
         }
     }
 
