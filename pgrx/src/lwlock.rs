@@ -12,6 +12,7 @@ use crate::{PGRXSharedMemory, PgSharedMemoryInitialization};
 use core::ops::{Deref, DerefMut};
 use std::cell::UnsafeCell;
 use std::ffi::CStr;
+use crate::ptr::PointerExt;
 
 /// A Rust locking mechanism which uses a PostgreSQL LWLock to lock the data.
 ///
@@ -73,6 +74,27 @@ impl<T: PGRXSharedMemory> PgLwLock<T> {
     }
 }
 
+struct AddinShmemInitLock(*mut crate::pg_sys::LWLock);
+
+impl AddinShmemInitLock {
+    unsafe fn exclusive() -> Self {
+        const ADDIN_SHMEM_INIT_LOCK_POS: usize = 21;
+        let lock = &raw mut (*crate::pg_sys::MainLWLockArray.add(ADDIN_SHMEM_INIT_LOCK_POS)).lock;
+        crate::pg_sys::LWLockAcquire(lock, crate::pg_sys::LWLockMode::LW_EXCLUSIVE);
+        Self(lock)
+    }
+}
+
+impl Drop for AddinShmemInitLock {
+    fn drop(&mut self) {
+        unsafe {
+            if self.0.is_non_null() {
+                crate::pg_sys::LWLockRelease(self.0);
+            }
+        }
+    }
+}
+
 impl<T: PGRXSharedMemory> PgSharedMemoryInitialization for PgLwLock<T> {
     type Value = T;
 
@@ -88,8 +110,7 @@ impl<T: PGRXSharedMemory> PgSharedMemoryInitialization for PgLwLock<T> {
             use crate::pg_sys;
 
             let shm_name = self.name;
-            let addin_shmem_init_lock = &raw mut (*pg_sys::MainLWLockArray.add(21)).lock;
-            pg_sys::LWLockAcquire(addin_shmem_init_lock, pg_sys::LWLockMode::LW_EXCLUSIVE);
+            let addin_shmem_init_lock = AddinShmemInitLock::exclusive();
 
             let mut found = false;
             let fv_shmem =
@@ -105,7 +126,7 @@ impl<T: PGRXSharedMemory> PgSharedMemoryInitialization for PgLwLock<T> {
 
             *self.inner.get() = fv_shmem;
 
-            pg_sys::LWLockRelease(addin_shmem_init_lock);
+            drop(addin_shmem_init_lock);
         }
     }
 }
@@ -192,6 +213,7 @@ unsafe fn release_unless_elog_unwinding(lock: *mut crate::pg_sys::LWLock) {
 pub mod dsm {
     use std::cell::UnsafeCell;
     use std::ffi::{c_int, c_void, CStr};
+    use crate::lwlock::AddinShmemInitLock;
 
     /// A PostgreSQL LWLock-backed locking mechanism for dynamic shared memory (DSM).
     ///
@@ -242,27 +264,6 @@ pub mod dsm {
         /// Memory size in bytes required to store a lock instance, along its wrapped value.
         pub const fn mem_size() -> usize {
             size_of::<DsmLwLock<T>>()
-        }
-
-        /// Request a new tranche ID for dynamically allocated LWLocks.
-        ///
-        /// # Caution
-        ///
-        /// Use parsimoniously, for locks store tranche IDs in 16-bit unsigned integers. The user
-        /// should not request a tranche ID per LWLock instance, but per LWLock family instead,
-        /// which groups instances of locks created for the same purpose.
-        ///
-        /// # Panics
-        ///
-        /// This function checks whether the next tranche ID exceeds the unsigned 16-bit boundary,
-        /// to avoid subtle errors inside PostgreSQL LWLock API that may associate a new lock to a
-        /// completely different tranche because of the ID truncation.
-        pub fn new_tranche_id() -> c_int {
-            let tranche_id = unsafe { crate::pg_sys::LWLockNewTrancheId() };
-            if tranche_id > (u16::MAX as i32) {
-                panic!("all valid LWLock tranche IDs have been consumed: this or any other extension is probably requesting a new tranche ID on every dynamic LWLock creation");
-            }
-            tranche_id
         }
 
         /// Initialize the DSM with a lock and a copy of the wrapped value.
@@ -324,6 +325,27 @@ pub mod dsm {
         }
     }
 
+    /// Request a new tranche ID for dynamically allocated LWLocks.
+    ///
+    /// # Caution
+    ///
+    /// Use parsimoniously, for locks store tranche IDs in 16-bit unsigned integers. The user
+    /// should not request a tranche ID per LWLock instance, but per LWLock family instead,
+    /// which groups instances of locks created for the same purpose.
+    ///
+    /// # Panics
+    ///
+    /// This function checks whether the next tranche ID exceeds the unsigned 16-bit boundary,
+    /// to avoid subtle errors inside PostgreSQL LWLock API that may associate a new lock to a
+    /// completely different tranche because of the ID truncation.
+    pub fn new_lwlock_tranche_id() -> c_int {
+        let tranche_id = unsafe { crate::pg_sys::LWLockNewTrancheId() };
+        if tranche_id > (u16::MAX as i32) {
+            panic!("all valid LWLock tranche IDs have been consumed: this or any other extension is probably requesting a new tranche ID on every dynamic LWLock creation");
+        }
+        tranche_id
+    }
+
     /// Component that obtains a LWLock tranche ID on Postgres Shared Memory initialization.
     ///
     /// To be used as the type for a static global, initialized by the [crate::pg_shmem_init!] macro
@@ -348,7 +370,7 @@ pub mod dsm {
     /// Safety requirements are those specified in the respective [DsmLwLock] functions.
     pub struct DsmLwLockTranche {
         name: &'static CStr,
-        lock: UnsafeCell<*mut crate::pg_sys::LWLock>, // TODO: Option<NonNull<_>>
+        lock: UnsafeCell<Option<c_int>>,
     }
 
     /// UnsafeCell cannot be shared between threads safely, we allow its use within static globals.
@@ -359,7 +381,7 @@ pub mod dsm {
         /// Define a LWLock tranche, along with the tranche name that backends will associate locks
         /// to when created from this tranche.
         pub const fn new(name: &'static CStr) -> Self {
-            Self { name, lock: UnsafeCell::new(std::ptr::null_mut()) }
+            Self { name, lock: UnsafeCell::new(None) }
         }
 
         /// The name assigned to this tranche.
@@ -376,15 +398,15 @@ pub mod dsm {
         /// This method must not be invoked on an uninitialized tranche, otherwise it will panic.
         pub fn tranche_id(&self) -> c_int {
             unsafe {
-                let lock = *self.lock.get();
-                if lock.is_null() {
-                    panic!("uninitialized DSM LWLock tranche (use pg_shmem_init!() in _PG_init() to initialize it)");
-                }
-                (*lock).tranche as c_int
+                (*self.lock.get()).expect("uninitialized DSM LWLock tranche (use pg_shmem_init!() in _PG_init() to initialize it)")
             }
         }
 
         /// Initialize the DSM with a lock and a copy of the wrapped value.
+        ///
+        /// # Panics
+        ///
+        /// This method must not be invoked on an uninitialized tranche, otherwise it will panic.
         ///
         /// # Safety
         ///
@@ -411,23 +433,15 @@ pub mod dsm {
         type Value = ();
 
         unsafe fn on_shmem_request(&'static self) {
-            unsafe {
-                crate::pg_sys::RequestNamedLWLockTranche(self.name.as_ptr(), 1);
-            }
+            // Nothing to do here
         }
 
         unsafe fn on_shmem_startup(&'static self, _value: Self::Value) {
-            unsafe {
-                let tranche_name = self.name;
-                let addin_shmem_init_lock = &raw mut (*crate::pg_sys::MainLWLockArray.add(21)).lock;
-                crate::pg_sys::LWLockAcquire(addin_shmem_init_lock, crate::pg_sys::LWLockMode::LW_EXCLUSIVE);
-
-                if (*self.lock.get()).is_null() {
-                    *self.lock.get() = &raw mut (*crate::pg_sys::GetNamedLWLockTranche(tranche_name.as_ptr())).lock;
-                }
-
-                crate::pg_sys::LWLockRelease(addin_shmem_init_lock);
+            let addin_shmem_init_lock = AddinShmemInitLock::exclusive();
+            if (*self.lock.get()).is_none() {
+                *self.lock.get() = Some(new_lwlock_tranche_id());
             }
+            drop(addin_shmem_init_lock);
         }
     }
 }
