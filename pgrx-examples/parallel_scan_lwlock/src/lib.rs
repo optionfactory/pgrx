@@ -113,7 +113,7 @@ pub mod pg_test {
 
 #[pg_guard]
 unsafe extern "C-unwind" fn pgrx_get_foreign_rel_size(_root: *mut PlannerInfo, _baserel: *mut RelOptInfo, _foreigntableid: Oid) {
-    let expected_query_rows: Cardinality = 1_000_000.0;
+    let expected_query_rows = 1_000_000f64;
     (*_baserel).tuples = expected_query_rows;
     (*_baserel).rows = expected_query_rows;
 }
@@ -129,12 +129,16 @@ unsafe extern "C-unwind" fn pgrx_get_foreign_paths(root: *mut PlannerInfo, baser
         baserel,
         std::ptr::null_mut(), // Use default target
         (*baserel).rows,
+        #[cfg(not(any(feature="pg13", feature="pg14", feature="pg15", feature="pg16", feature="pg17")))]
+        0, // disabled_nodes
         startup_cost,
         total_cost,
         std::ptr::null_mut(), // pathkeys
         std::ptr::null_mut(), // no outer rel
         std::ptr::null_mut(), // no extra plan
-        std::ptr::null_mut() // no fdw_private data while planning
+        #[cfg(not(any(feature="pg13", feature="pg14", feature="pg15", feature="pg16")))]
+        std::ptr::null_mut(), // fdw_restrictinfo
+        std::ptr::null_mut(), // no fdw_private data while planning
     );
     add_path(baserel, sequential_path as *mut Path);
 
@@ -144,12 +148,16 @@ unsafe extern "C-unwind" fn pgrx_get_foreign_paths(root: *mut PlannerInfo, baser
         baserel,
         std::ptr::null_mut(), // Use default target
         (*baserel).rows,
+        #[cfg(not(any(feature="pg13", feature="pg14", feature="pg15", feature="pg16", feature="pg17")))]
+        0, // disabled_nodes
         startup_cost,
         total_cost / work_factor,
         std::ptr::null_mut(), // pathkeys
         std::ptr::null_mut(), // no outer rel
         std::ptr::null_mut(), // no extra plan
-        std::ptr::null_mut() // no fdw_private data while planning
+        #[cfg(not(any(feature="pg13", feature="pg14", feature="pg15", feature="pg16")))]
+        std::ptr::null_mut(), // fdw_restrictinfo
+        std::ptr::null_mut(), // no fdw_private data while planning
     );
     // Path might not be parallel_safe if parallel execution is disabled via max_parallel_workers_per_gather=0,
     // failing an assertion in add_partial_path
@@ -317,18 +325,18 @@ pub static EMPTY_FDW: FdwRoutine = FdwRoutine {
     InitializeWorkerForeignScan: None,
     ShutdownForeignScan: None,
     ReparameterizeForeignPathByChild: None,
-    #[cfg(not(any(feature="pg13", feature="pg14")))]
+    #[cfg(not(feature="pg13"))]
     ExecForeignBatchInsert: None,
-    #[cfg(not(any(feature="pg13", feature="pg14")))]
+    #[cfg(not(feature="pg13"))]
     ExecForeignTruncate: None,
-    #[cfg(not(any(feature="pg13", feature="pg14")))]
+    #[cfg(not(feature="pg13"))]
     ForeignAsyncConfigureWait: None,
-    #[cfg(not(any(feature="pg13", feature="pg14")))]
+    #[cfg(not(feature="pg13"))]
     ForeignAsyncNotify: None,
-    #[cfg(not(any(feature="pg13", feature="pg14")))]
+    #[cfg(not(feature="pg13"))]
     ForeignAsyncRequest: None,
-    #[cfg(not(any(feature="pg13", feature="pg14")))]
+    #[cfg(not(feature="pg13"))]
     GetForeignModifyBatchSize: None,
-    #[cfg(not(any(feature="pg13", feature="pg14")))]
+    #[cfg(not(feature="pg13"))]
     IsForeignPathAsyncCapable: None,
 };
