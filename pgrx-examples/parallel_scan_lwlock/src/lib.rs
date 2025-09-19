@@ -37,9 +37,11 @@
 //! CREATE SERVER counter_srv FOREIGN DATA WRAPPER counter;
 //! IMPORT FOREIGN SCHEMA my_counter FROM SERVER counter_srv INTO public;
 //!
+//! ## Query examples
+//!
 //! select * from my_counter limit 10;
 //!
-//! select sum(c.counter) from (select counter from my_counter limit 100) as c;
+//! select count(distinct(c.counter)) as count from (select counter from my_counter limit 10000000) as c;
 
 mod routine;
 
@@ -193,7 +195,7 @@ unsafe extern "C-unwind" fn pgrx_iterate_foreign_scan(node: *mut ForeignScanStat
     assert!(!slot.is_null());
     (*(*slot).tts_ops).clear.unwrap()(slot);
 
-    let column_count = (*(*slot).tts_tupleDescriptor).natts as usize; // Should be always = 1 in this example
+    let column_count = (*(*slot).tts_tupleDescriptor).natts as usize;
     assert_eq!(column_count, 1, "Foreign table column count should be always = 1 in this example");
     let nulls = std::slice::from_raw_parts_mut((*slot).tts_isnull, column_count);
     let values: &mut [Datum] = std::slice::from_raw_parts_mut((*slot).tts_values, column_count);
