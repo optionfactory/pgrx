@@ -12,7 +12,6 @@ use crate::{PGRXSharedMemory, PgSharedMemoryInitialization};
 use core::ops::{Deref, DerefMut};
 use std::cell::UnsafeCell;
 use std::ffi::CStr;
-use crate::ptr::PointerExt;
 
 /// A Rust locking mechanism which uses a PostgreSQL LWLock to lock the data.
 ///
@@ -88,7 +87,7 @@ impl AddinShmemInitLock {
 impl Drop for AddinShmemInitLock {
     fn drop(&mut self) {
         unsafe {
-            if self.0.is_non_null() {
+            if !self.0.is_null() {
                 crate::pg_sys::LWLockRelease(self.0);
             }
         }
