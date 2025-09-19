@@ -146,10 +146,8 @@ unsafe impl<T: PGRXSharedMemory> Sync for PgLwLockShareGuard<'_, T> {}
 
 impl<T> Drop for PgLwLockShareGuard<'_, T> {
     fn drop(&mut self) {
-        if !self.lock.is_null() {
-            // SAFETY: self.lock is always valid
-            unsafe { release_unless_elog_unwinding(self.lock) }
-        }
+        // SAFETY: self.lock is always valid
+        unsafe { release_unless_elog_unwinding(self.lock) }
     }
 }
 
@@ -187,10 +185,8 @@ impl<T> DerefMut for PgLwLockExclusiveGuard<'_, T> {
 
 impl<T> Drop for PgLwLockExclusiveGuard<'_, T> {
     fn drop(&mut self) {
-        if !self.lock.is_null() {
-            // SAFETY: self.lock is always valid
-            unsafe { release_unless_elog_unwinding(self.lock) }
-        }
+        // SAFETY: self.lock is always valid
+        unsafe { release_unless_elog_unwinding(self.lock) }
     }
 }
 
@@ -450,6 +446,7 @@ pub mod dsm {
 pub mod scan {
     use std::borrow::{Borrow, BorrowMut};
     use std::ffi::{c_void, CStr};
+    use std::ops::{Deref, DerefMut};
     use std::panic::AssertUnwindSafe;
     use super::dsm::{DsmLwLock, DsmLwLockHandle, DsmLwLockTranche};
 
@@ -618,6 +615,56 @@ pub mod scan {
         data: ParallelScanSharedState<T, A>,
     }
 
+    /// A shared LWLock guard that skips locking if the lock was not shared yet.
+    pub enum ParallelScanLwLockShareGuard<'a, T> {
+        Local(&'a T),
+        Shared(super::PgLwLockShareGuard<'a, T>),
+    }
+
+    unsafe impl<T: crate::PGRXSharedMemory> Sync for ParallelScanLwLockShareGuard<'_, T> {}
+
+    impl<T> Deref for ParallelScanLwLockShareGuard<'_, T> {
+        type Target = T;
+
+        #[inline]
+        fn deref(&self) -> &T {
+            match self {
+                Self::Local(value) => value,
+                Self::Shared(guard) => guard.deref(),
+            }
+        }
+    }
+
+    /// An exclusive LWLock guard that skips locking if the lock was not shared yet.
+    pub enum ParallelScanLwLockExclusiveGuard<'a, T> {
+        Local(&'a mut T),
+        Shared(super::PgLwLockExclusiveGuard<'a, T>),
+    }
+
+    unsafe impl<T: crate::PGRXSharedMemory> Sync for ParallelScanLwLockExclusiveGuard<'_, T> {}
+
+    impl<T> Deref for ParallelScanLwLockExclusiveGuard<'_, T> {
+        type Target = T;
+
+        #[inline]
+        fn deref(&self) -> &T {
+            match self {
+                Self::Local(value) => value,
+                Self::Shared(guard) => guard.deref(),
+            }
+        }
+    }
+
+    impl<T> DerefMut for ParallelScanLwLockExclusiveGuard<'_, T> {
+        #[inline]
+        fn deref_mut(&mut self) -> &mut T {
+            match self {
+                Self::Local(value) => value,
+                Self::Shared(guard) => guard.deref_mut(),
+            }
+        }
+    }
+
     impl<T, A> ParallelScanLwLock<T, A> where A: BorrowMut<T> {
 
         /// Constructs a new LWLock, given a tranche and an initial value (or a box type from which
@@ -627,32 +674,18 @@ pub mod scan {
         }
 
         /// Obtain a shared lock (which comes with `&T` access).
-        pub fn shared(&self) -> super::PgLwLockShareGuard<'_, T> {
+        pub fn shared(&self) -> ParallelScanLwLockShareGuard<'_, T> {
             match &self.data {
-                ParallelScanSharedState::Local(value) => {
-                    super::PgLwLockShareGuard {
-                        data: value.borrow(),
-                        lock: std::ptr::null_mut(), // REVIEW: this because we don't need to lock? not super clear. Enum is elegant but verbose, this is terse but unclear
-                    }
-                },
-                ParallelScanSharedState::Shared(handle) => {
-                    handle.shared()
-                }
+                ParallelScanSharedState::Local(value) => ParallelScanLwLockShareGuard::Local(value.borrow()),
+                ParallelScanSharedState::Shared(handle) => ParallelScanLwLockShareGuard::Shared(handle.shared()),
             }
         }
 
         /// Obtain an exclusive lock (which comes with `&mut T` access).
-        pub fn exclusive(&mut self) -> super::PgLwLockExclusiveGuard<'_, T> {
+        pub fn exclusive(&mut self) -> ParallelScanLwLockExclusiveGuard<'_, T> {
             match &mut self.data {
-                ParallelScanSharedState::Local(value) => {
-                    super::PgLwLockExclusiveGuard {
-                        data: value.borrow_mut(),
-                        lock: std::ptr::null_mut(),
-                    }
-                },
-                ParallelScanSharedState::Shared(handle) => {
-                    handle.exclusive()
-                }
+                ParallelScanSharedState::Local(value) => ParallelScanLwLockExclusiveGuard::Local(value.borrow_mut()),
+                ParallelScanSharedState::Shared(handle) => ParallelScanLwLockExclusiveGuard::Shared(handle.exclusive()),
             }
         }
     }
