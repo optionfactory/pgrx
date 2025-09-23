@@ -214,17 +214,18 @@ pub mod dsm {
     ///
     /// This is a lower level component which defines operations close to the PostgreSQL LWLock API.
     /// If you are interested in locking the shared memory of a foreign parallel scan, please refer
-    /// to [ParallelScanLwLock] and [ParallelScanLwLockTranche].
+    /// to [ParallelScanLwLock](crate::lwlock::scan::ParallelScanLwLock) and
+    /// [ParallelScanLwLockTranche](crate::lwlock::scan::ParallelScanLwLockTranche).
     ///
     /// # Usage
     ///
     /// First, the user may need to obtain a new tranche ID, which is a marker for a family of
-    /// LWLocks. It can be retrieved by calling [DsmLwLock::new_tranche_id], and it's recommended
+    /// LWLocks. It can be retrieved by calling [new_lwlock_tranche_id], and it's recommended
     /// that a tranche ID for a LWLock family is retrieved once per server instance. This function
-    /// cannot be called during the extension setup in`_PG_init` nor in the SHMEM hooks (which are
-    /// made available by pgrx through the [crate::PgSharedMemoryInitialization] trait and the
-    /// [crate::pg_shmem_init!] macro). If you find more convenient a tranche ID provided at startup
-    /// time, refer to the documentation of the [DsmLwLockTranche] type.
+    /// can be called during the extension setup in the SHMEM hooks (which are made available by
+    /// pgrx through the [crate::PgSharedMemoryInitialization] trait and the [crate::pg_shmem_init!]
+    /// macro). If you find more convenient a tranche ID provided at startup time, refer to the
+    /// documentation of the [DsmLwLockTranche] type.
     ///
     /// In addition to the tranche ID, the DSM lock must be initialized along with the data it
     /// wraps. Data is byte-wise copied from the pointer passed to [DsmLwLock::init] to the DSM. Its
@@ -417,7 +418,8 @@ pub mod dsm {
         ///
         /// # Safety
         ///
-        /// * `dsm` was already initialized with [Self::init] (and therefore all its safety requirements are met).
+        /// * `dsm` was already initialized with [Self::init] (and therefore all its safety
+        ///   requirements are met).
         pub unsafe fn register<T>(&self, dsm: *mut c_void) -> DsmLwLockHandle<T> where T: crate::PGRXSharedMemory {
             DsmLwLock::<T>::register(dsm, self.name)
         }
@@ -614,7 +616,7 @@ pub mod scan {
         data: ParallelScanSharedState<T, A>,
     }
 
-    /// A shared LWLock guard that skips locking if the lock was not shared yet.
+    /// A shared LWLock guard that skips locking if the lock was not moved to shared memory yet.
     pub enum ParallelScanLwLockShareGuard<'a, T> {
         Local(&'a T),
         Shared(super::PgLwLockShareGuard<'a, T>),
@@ -634,7 +636,7 @@ pub mod scan {
         }
     }
 
-    /// An exclusive LWLock guard that skips locking if the lock was not shared yet.
+    /// An exclusive LWLock guard that skips locking if the lock was not moved to shared memory yet.
     pub enum ParallelScanLwLockExclusiveGuard<'a, T> {
         Local(&'a mut T),
         Shared(super::PgLwLockExclusiveGuard<'a, T>),
