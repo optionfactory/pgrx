@@ -1,0 +1,1658 @@
+$ cargo test --all --no-default-features --features "pg16 pg_test cshim proptest" --all-targets 
+   Compiling pgrx-pg-sys v0.18.1 (/home/fkomauli/projects/other/pgrx/pgrx-pg-sys)
+   Compiling ring v0.17.14
+   Compiling pgthread v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/pgthread)
+   Compiling rustls v0.23.40
+   Compiling rustls-webpki v0.103.13
+   Compiling rustls-platform-verifier v0.6.2
+   Compiling ureq v3.3.0
+   Compiling cargo-pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/cargo-pgrx)
+   Compiling pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/pgrx)
+   Compiling pgrx-tests v0.18.1 (/home/fkomauli/projects/other/pgrx/pgrx-tests)
+   Compiling spi_srf v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/spi_srf)
+   Compiling hooks v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/hooks)
+   Compiling subtrans_infos v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/subtrans_infos)
+   Compiling wal_decoder v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/wal_decoder)
+   Compiling bytea v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/bytea)
+   Compiling custom_types v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/custom_types)
+   Compiling versioned_custom_libname_so v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/versioned_custom_libname_so)
+   Compiling bad_ideas v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/bad_ideas)
+   Compiling schemas v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/schemas)
+   Compiling errors v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/errors)
+   Compiling rewrite_manip v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/rewrite_manip)
+   Compiling pgrx-unit-tests v0.18.1 (/home/fkomauli/projects/other/pgrx/pgrx-unit-tests)
+   Compiling shmem v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/shmem)
+   Compiling range v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/range)
+   Compiling composite_type v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/composite_type)
+   Compiling srf v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/srf)
+   Compiling nostd v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/nostd)
+   Compiling pgtrybuilder v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/pgtrybuilder)
+   Compiling operators v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/operators)
+   Compiling custom_libname v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/custom_libname)
+   Compiling spi v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/spi)
+   Compiling triggers v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/triggers)
+   Compiling versioned_so v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/versioned_so)
+   Compiling arrays v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/arrays)
+   Compiling strings v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/strings)
+   Compiling datetime v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/datetime)
+   Compiling numeric v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/numeric)
+   Compiling bgworker v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/bgworker)
+   Compiling benching v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/benching)
+   Compiling custom_sql v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/custom_sql)
+   Compiling aggregate v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/aggregate)
+   Compiling parallel_scan_lwlock v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/parallel_scan_lwlock)
+warning[E0133]: call to unsafe function `pgrx::callconv::FcInfo::<'fcx>::return_raw_datum` is unsafe and requires unsafe block
+  --> pgrx-examples/parallel_scan_lwlock/src/routine.rs:22:9
+   |
+22 |         fcinfo.return_raw_datum(datum)
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+   |
+   = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+  --> pgrx-examples/parallel_scan_lwlock/src/routine.rs:18:5
+   |
+18 |     unsafe fn box_into<'fcx>(self, fcinfo: &mut FcInfo<'fcx>) -> pgrx::datum::Datum<'fcx> {
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+   = note: `#[warn(unsafe_op_in_unsafe_fn)]` (part of `#[warn(rust_2024_compatibility)]`) on by default
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:117:5
+    |
+117 |     (*_baserel).tuples = expected_query_rows;
+    |     ^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:115:1
+    |
+115 | unsafe extern "C-unwind" fn pgrx_get_foreign_rel_size(_root: *mut PlannerInfo, _baserel: *mut RelOptInfo, _foreigntableid: Oid) {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:118:5
+    |
+118 |     (*_baserel).rows = expected_query_rows;
+    |     ^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: call to unsafe function `pgrx::pg_sys::create_foreignscan_path` is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:127:27
+    |
+127 |       let sequential_path = create_foreignscan_path(
+    |  ___________________________^
+128 | |         root,
+129 | |         baserel,
+130 | |         std::ptr::null_mut(), // Use default target
+...   |
+141 | |         std::ptr::null_mut(), // no fdw_private data while planning
+142 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:122:1
+    |
+122 | unsafe extern "C-unwind" fn pgrx_get_foreign_paths(root: *mut PlannerInfo, baserel: *mut RelOptInfo, _foreigntableid: Oid) {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:131:9
+    |
+131 |         (*baserel).rows,
+    |         ^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: call to unsafe function `pgrx::pg_sys::add_path` is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:143:5
+    |
+143 |     add_path(baserel, sequential_path as *mut Path);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: use of mutable static is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:145:23
+    |
+145 |     let work_factor = max_parallel_workers_per_gather as f64;
+    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ use of mutable static
+    |
+    = note: mutable statics can be mutated by multiple threads: aliasing violations or data races will cause undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: call to unsafe function `pgrx::pg_sys::create_foreignscan_path` is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:146:25
+    |
+146 |       let parallel_path = create_foreignscan_path(
+    |  _________________________^
+147 | |         root,
+148 | |         baserel,
+149 | |         std::ptr::null_mut(), // Use default target
+...   |
+160 | |         std::ptr::null_mut(), // no fdw_private data while planning
+161 | |     );
+    | |_____^ call to unsafe function
+    |
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:150:9
+    |
+150 |         (*baserel).rows,
+    |         ^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:164:8
+    |
+164 |     if (*parallel_path).path.parallel_safe {
+    |        ^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:165:9
+    |
+165 |         (*parallel_path).path.parallel_aware = true;
+    |         ^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:166:9
+    |
+166 |         (*parallel_path).path.parallel_workers = max_parallel_workers_per_gather;
+    |         ^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: use of mutable static is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:166:50
+    |
+166 |         (*parallel_path).path.parallel_workers = max_parallel_workers_per_gather;
+    |                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ use of mutable static
+    |
+    = note: mutable statics can be mutated by multiple threads: aliasing violations or data races will cause undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: call to unsafe function `pgrx::pg_sys::add_partial_path` is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:167:9
+    |
+167 |         add_partial_path(baserel, parallel_path as *mut Path);
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:200:27
+    |
+200 |     let scan_state = &mut *((*node).fdw_state as *mut c_void as *mut CounterScanState);
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:199:1
+    |
+199 | unsafe extern "C-unwind" fn pgrx_iterate_foreign_scan(node: *mut ForeignScanState) -> *mut TupleTableSlot {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:200:29
+    |
+200 |     let scan_state = &mut *((*node).fdw_state as *mut c_void as *mut CounterScanState);
+    |                             ^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:202:16
+    |
+202 |     let slot = (*node).ss.ss_ScanTupleSlot;
+    |                ^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: call to unsafe function is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:204:5
+    |
+204 |     (*(*slot).tts_ops).clear.unwrap()(slot);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:204:5
+    |
+204 |     (*(*slot).tts_ops).clear.unwrap()(slot);
+    |     ^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:204:7
+    |
+204 |     (*(*slot).tts_ops).clear.unwrap()(slot);
+    |       ^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:206:24
+    |
+206 |     let column_count = (*(*slot).tts_tupleDescriptor).natts as usize;
+    |                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:206:26
+    |
+206 |     let column_count = (*(*slot).tts_tupleDescriptor).natts as usize;
+    |                          ^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: call to unsafe function `std::slice::from_raw_parts_mut` is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:208:17
+    |
+208 |     let nulls = std::slice::from_raw_parts_mut((*slot).tts_isnull, column_count);
+    |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:208:48
+    |
+208 |     let nulls = std::slice::from_raw_parts_mut((*slot).tts_isnull, column_count);
+    |                                                ^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: call to unsafe function `std::slice::from_raw_parts_mut` is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:209:32
+    |
+209 |     let values: &mut [Datum] = std::slice::from_raw_parts_mut((*slot).tts_values, column_count);
+    |                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:209:63
+    |
+209 |     let values: &mut [Datum] = std::slice::from_raw_parts_mut((*slot).tts_values, column_count);
+    |                                                               ^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:218:21
+    |
+218 |     let slot = &mut *slot;
+    |                     ^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:222:23
+    |
+222 |     slot.tts_nvalid = (*slot.tts_tupleDescriptor).natts as i16;
+    |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:228:28
+    |
+228 |     let _scan_state = &mut *((*node).fdw_state as *mut c_void as *mut CounterScanState);
+    |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:227:1
+    |
+227 | unsafe extern "C-unwind" fn pgrx_end_foreign_scan(node: *mut ForeignScanState) {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:228:30
+    |
+228 |     let _scan_state = &mut *((*node).fdw_state as *mut c_void as *mut CounterScanState);
+    |                              ^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: call to unsafe function `pgrx_end_foreign_scan` is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:234:5
+    |
+234 |     pgrx_end_foreign_scan(node);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:233:1
+    |
+233 | unsafe extern "C-unwind" fn pgrx_re_scan_foreign_scan(node: *mut ForeignScanState) {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:251:27
+    |
+251 |     let scan_state = &mut *((*foreign_scan_state).fdw_state as *mut CounterScanState);
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:249:1
+    |
+249 | unsafe extern "C-unwind" fn pgrx_initialize_dsm_foreign_scan(foreign_scan_state: *mut ForeignScanState, _pcxt: *mut ParallelContext, shared_mem: *mut ::std::os::raw::c_void) {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:251:29
+    |
+251 |     let scan_state = &mut *((*foreign_scan_state).fdw_state as *mut CounterScanState);
+    |                             ^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: call to unsafe function `pgrx::scan::ParallelScanLwLock::<T, A>::initialize_dsm_and_register_leader` is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:252:5
+    |
+252 |     scan_state.counter_lock.initialize_dsm_and_register_leader(shared_mem);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:257:27
+    |
+257 |     let scan_state = &mut *((*node).fdw_state as *mut CounterScanState);
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:256:1
+    |
+256 | unsafe extern "C-unwind" fn pgrx_reinitialize_dsm_foreign_scan(node: *mut ForeignScanState, _pcxt: *mut ParallelContext, _coordinate: *mut ::std::os::raw::c_void) {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:257:29
+    |
+257 |     let scan_state = &mut *((*node).fdw_state as *mut CounterScanState);
+    |                             ^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:264:27
+    |
+264 |     let scan_state = &mut *((*foreign_scan_state).fdw_state as *mut CounterScanState);
+    |                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+note: an unsafe function restricts its caller, but its body is safe by default
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:262:1
+    |
+262 | unsafe extern "C-unwind" fn pgrx_initialize_worker_foreign_scan(foreign_scan_state: *mut ForeignScanState, _toc: *mut shm_toc, coordinate: *mut ::std::os::raw::c_void) {
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: dereference of raw pointer is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:264:29
+    |
+264 |     let scan_state = &mut *((*foreign_scan_state).fdw_state as *mut CounterScanState);
+    |                             ^^^^^^^^^^^^^^^^^^^^^ dereference of raw pointer
+    |
+    = note: raw pointers may be null, dangling or unaligned; they can violate aliasing rules and cause data races: all of these are undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+warning[E0133]: call to unsafe function `pgrx::scan::ParallelScanLwLock::<T, A>::register_parallel_worker` is unsafe and requires unsafe block
+   --> pgrx-examples/parallel_scan_lwlock/src/lib.rs:265:5
+    |
+265 |     scan_state.counter_lock.register_parallel_worker(coordinate);
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ call to unsafe function
+    |
+    = note: consult the function's documentation for information on how to avoid undefined behavior
+    = note: for more information, see <https://doc.rust-lang.org/edition-guide/rust-2024/unsafe-op-in-unsafe-fn.html>
+
+For more information about this error, try `rustc --explain E0133`.
+warning: `parallel_scan_lwlock` (lib test) generated 39 warnings (run `cargo fix --lib -p parallel_scan_lwlock --tests` to apply 9 suggestions)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 18.69s
+     Running unittests src/lib.rs (target/debug/deps/aggregate-58b10a5fa0f61d9e)
+
+running 3 tests
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.40
+   Compiling rustls-webpki v0.103.13
+   Compiling rustls-platform-verifier v0.6.2
+   Compiling ureq v3.3.0
+   Compiling cargo-pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/cargo-pgrx)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.09s
+     Running `/home/fkomauli/projects/other/pgrx/target/debug/cargo-pgrx pgrx install --test --pg-config /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config --features 'pg_test cshim proptest pg16' --no-default-features`
+    Ignoring feature `cshim`
+    Ignoring feature `proptest`
+       Using PgConfig("pg16") and `pg_config` from /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config
+    Building extension with features pg_test pg16
+     Running command "/home/fkomauli/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/cargo" "rustc" "--lib" "--manifest-path" "/home/fkomauli/projects/other/pgrx/pgrx-examples/aggregate/Cargo.toml" "--features" "pg_test pg16" "--no-default-features" "--message-format=json-render-diagnostics" "--" "-C" "link-arg=-Wl,--no-gc-sections"
+   Compiling pgrx-pg-sys v0.18.1 (/home/fkomauli/projects/other/pgrx/pgrx-pg-sys)
+   Compiling pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/pgrx)
+   Compiling aggregate v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/aggregate)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 6.94s
+  Installing extension
+     Copying control file to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/aggregate.control
+     Copying shared library to /home/fkomauli/.pgrx/16.8/pgrx-install/lib/postgresql/aggregate.so
+  Discovered 10 SQL entities: 1 schemas (1 unique), 7 functions, 1 types, 0 enums, 0 sqls, 0 ords, 0 hashes, 1 aggregates, 0 triggers
+     Writing SQL entities to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/aggregate--0.0.0.sql
+    Finished installing aggregate
+test tests::pg_test_integer_avg_state ... ok
+test tests::pg_test_integer_avg_state_sql ... ok
+test tests::pg_test_integer_avg_with_null ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 11.94s
+
+     Running unittests src/lib.rs (target/debug/deps/arrays-d5b59cf5963ef3af)
+
+running 1 test
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.40
+   Compiling rustls-webpki v0.103.13
+   Compiling rustls-platform-verifier v0.6.2
+   Compiling ureq v3.3.0
+   Compiling cargo-pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/cargo-pgrx)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.07s
+     Running `/home/fkomauli/projects/other/pgrx/target/debug/cargo-pgrx pgrx install --test --pg-config /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config --features 'proptest pg16 cshim pg_test' --no-default-features`
+    Ignoring feature `proptest`
+    Ignoring feature `cshim`
+       Using PgConfig("pg16") and `pg_config` from /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config
+    Building extension with features pg16 pg_test
+     Running command "/home/fkomauli/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/cargo" "rustc" "--lib" "--manifest-path" "/home/fkomauli/projects/other/pgrx/pgrx-examples/arrays/Cargo.toml" "--features" "pg16 pg_test" "--no-default-features" "--message-format=json-render-diagnostics" "--" "-C" "link-arg=-Wl,--no-gc-sections"
+   Compiling pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/pgrx)
+   Compiling arrays v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/arrays)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.01s
+  Installing extension
+     Copying control file to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/arrays.control
+     Copying shared library to /home/fkomauli/.pgrx/16.8/pgrx-install/lib/postgresql/arrays.so
+  Discovered 23 SQL entities: 2 schemas (2 unique), 19 functions, 1 types, 0 enums, 1 sqls, 0 ords, 0 hashes, 0 aggregates, 0 triggers
+     Writing SQL entities to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/arrays--0.1.0.sql
+    Finished installing arrays
+test tests::pg_test_vec_of_customtype ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 7.24s
+
+     Running unittests src/lib.rs (target/debug/deps/bad_ideas-19f5285968f8abcb)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/benching-b3c7e05a555309b4)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/bgworker-d84b118fcde27115)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/bytea-051922b489c75019)
+
+running 2 tests
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.40
+   Compiling rustls-webpki v0.103.13
+   Compiling rustls-platform-verifier v0.6.2
+   Compiling ureq v3.3.0
+   Compiling cargo-pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/cargo-pgrx)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.06s
+     Running `/home/fkomauli/projects/other/pgrx/target/debug/cargo-pgrx pgrx install --test --pg-config /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config --features 'pg16 cshim pg_test proptest' --no-default-features`
+    Ignoring feature `cshim`
+    Ignoring feature `proptest`
+       Using PgConfig("pg16") and `pg_config` from /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config
+    Building extension with features pg16 pg_test
+     Running command "/home/fkomauli/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/cargo" "rustc" "--lib" "--manifest-path" "/home/fkomauli/projects/other/pgrx/pgrx-examples/bytea/Cargo.toml" "--features" "pg16 pg_test" "--no-default-features" "--message-format=json-render-diagnostics" "--" "-C" "link-arg=-Wl,--no-gc-sections"
+   Compiling bytea v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/bytea)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.27s
+  Installing extension
+     Copying control file to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/bytea.control
+     Copying shared library to /home/fkomauli/.pgrx/16.8/pgrx-install/lib/postgresql/bytea.so
+  Discovered 6 SQL entities: 1 schemas (1 unique), 5 functions, 0 types, 0 enums, 0 sqls, 0 ords, 0 hashes, 0 aggregates, 0 triggers
+     Writing SQL entities to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/bytea--0.0.0.sql
+    Finished installing bytea
+test tests::pg_test_gzip_text ... ok
+test tests::pg_test_gzip_bytes ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.48s
+
+     Running unittests src/main.rs (target/debug/deps/cargo_pgrx-06e62e630b793c51)
+
+running 35 tests
+test cargo::tests::cdylib_rustc_args_carry_no_gc_sections_workaround ... ok
+test cargo::tests::cdylib_rustc_args_skip_non_gnuish_targets ... ok
+test command::bench::tests::format_wait_duration_uses_singular_and_plural_units ... ok
+test cargo::tests::cargo_rustc_args_are_not_cargo_config ... ok
+test command::bench::tests::report_sections_omit_failed_runs_and_mark_drift ... ok
+test command::bench::tests::report_flag_parses_from_cli ... ok
+test command::bench::tests::report_rejects_run_only_flags ... ok
+test command::bench::tests::throughput_interval_uses_time_estimate_to_compute_rate ... ok
+test command::bench::tests::throughput_without_interval_uses_decimal_units_when_requested ... ok
+test command::install::tests::auto_detected_package_builds_against_resolved_manifest ... ok
+test command::install::tests::explicit_package_keeps_user_manifest_targeting ... ok
+test command::regress::tests::parse_args_accepts_pg_version_then_test_filter ... ok
+test command::regress::tests::parse_args_rejects_test_filter_then_pg_version ... ok
+test command::regress::tests::parse_args_does_not_treat_unsupported_pg_label_as_version ... ok
+test command::regress::tests::parse_args_treats_single_non_version_as_test_filter ... ok
+test command::schema::tests::empty_args_yield_no_version_and_no_items ... ok
+test command::schema::tests::first_arg_that_looks_like_version_but_isnt_is_an_item ... ok
+test command::schema::tests::items_only_without_version ... ok
+test command::schema::tests::version_alone_is_captured ... ok
+test command::schema::tests::version_followed_by_items ... ok
+test command::bench::tests::wait_defaults_to_zero ... ok
+test command::test::tests::test_command_targets_resolved_manifest_for_outer_and_inner_builds ... ok
+test command::bench::tests::wait_parses_from_cli ... ok
+test object_utils::tests::reads_schema_section_from_minimal_macho64 ... ok
+test object_utils::tests::reads_sentinel_schema_section_from_minimal_macho64 ... ok
+test command::schema::tests::test_missing_schema_section_errors ... ok
+test object_utils::tests::slice_unknown_architecture_returns_none ... ok
+test object_utils::tests::parses_universal_binary_slice ... ok
+test object_utils::tests::returns_none_for_valid_binary_without_schema_section ... ok
+test command::upgrade::tests::find_package_manifest ... ok
+test command::upgrade::tests::find_package_manifest_in_workspace ... ok
+test command::upgrade::tests::process_package_manifest ... ok
+test command::upgrade::tests::process_workspace_package_manifest ... ok
+test command::upgrade::tests::process_workspace_manifest ... ok
+test object_utils::tests::parses_managed_postmasters ... ok
+
+test result: ok. 35 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.09s
+
+     Running tests/install_pg_test_regression.rs (target/debug/deps/install_pg_test_regression-7277d626d87ac819)
+
+running 4 tests
+test cargo_toml_path_uses_forward_slashes ... ok
+test command_output_path_match_accepts_escaped_windows_paths ... ok
+test install_test_extension_handles_mid_stream_schema_sentinel ... ok
+test install_from_virtual_workspace_auto_detects_manifest_and_preserves_rustflags ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 20.97s
+
+     Running unittests src/lib.rs (target/debug/deps/composite_type-91420a5286401d36)
+
+running 4 tests
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.40
+   Compiling rustls-webpki v0.103.13
+   Compiling rustls-platform-verifier v0.6.2
+   Compiling ureq v3.3.0
+   Compiling cargo-pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/cargo-pgrx)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.09s
+     Running `/home/fkomauli/projects/other/pgrx/target/debug/cargo-pgrx pgrx install --test --pg-config /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config --features 'pg16 cshim proptest pg_test' --no-default-features`
+    Ignoring feature `cshim`
+    Ignoring feature `proptest`
+       Using PgConfig("pg16") and `pg_config` from /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config
+    Building extension with features pg16 pg_test
+     Running command "/home/fkomauli/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/cargo" "rustc" "--lib" "--manifest-path" "/home/fkomauli/projects/other/pgrx/pgrx-examples/composite_type/Cargo.toml" "--features" "pg16 pg_test" "--no-default-features" "--message-format=json-render-diagnostics" "--" "-C" "link-arg=-Wl,--no-gc-sections"
+   Compiling composite_type v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/composite_type)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.26s
+  Installing extension
+     Copying control file to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/composite_type.control
+     Copying shared library to /home/fkomauli/.pgrx/16.8/pgrx-install/lib/postgresql/composite_type.so
+  Discovered 11 SQL entities: 1 schemas (1 unique), 8 functions, 0 types, 0 enums, 2 sqls, 0 ords, 0 hashes, 0 aggregates, 0 triggers
+     Writing SQL entities to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/composite_type--0.0.0.sql
+    Finished installing composite_type
+test tests::pg_test_dog_add_operator ... ok
+test tests::pg_test_create_dog ... ok
+test tests::pg_test_scritch_dog ... ok
+test tests::pg_test_make_friendship ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.22s
+
+     Running unittests src/lib.rs (target/debug/deps/other_name-1684efae70cb9217)
+
+running 1 test
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.40
+   Compiling rustls-webpki v0.103.13
+   Compiling rustls-platform-verifier v0.6.2
+   Compiling ureq v3.3.0
+   Compiling cargo-pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/cargo-pgrx)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.08s
+     Running `/home/fkomauli/projects/other/pgrx/target/debug/cargo-pgrx pgrx install --test --pg-config /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config --features 'proptest cshim pg16 pg_test' --no-default-features`
+    Ignoring feature `proptest`
+    Ignoring feature `cshim`
+       Using PgConfig("pg16") and `pg_config` from /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config
+    Building extension with features pg16 pg_test
+     Running command "/home/fkomauli/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/cargo" "rustc" "--lib" "--manifest-path" "/home/fkomauli/projects/other/pgrx/pgrx-examples/custom_libname/Cargo.toml" "--features" "pg16 pg_test" "--no-default-features" "--message-format=json-render-diagnostics" "--" "-C" "link-arg=-Wl,--no-gc-sections"
+   Compiling custom_libname v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/custom_libname)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.17s
+  Installing extension
+     Copying control file to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/other_name.control
+     Copying shared library to /home/fkomauli/.pgrx/16.8/pgrx-install/lib/postgresql/other_name.so
+  Discovered 3 SQL entities: 1 schemas (1 unique), 2 functions, 0 types, 0 enums, 0 sqls, 0 ords, 0 hashes, 0 aggregates, 0 triggers
+     Writing SQL entities to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/other_name--0.0.0.sql
+    Finished installing other_name
+test tests::pg_test_hello_custom_libname ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.12s
+
+     Running unittests src/lib.rs (target/debug/deps/custom_sql-839a2101e2977107)
+
+running 1 test
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.40
+   Compiling rustls-webpki v0.103.13
+   Compiling rustls-platform-verifier v0.6.2
+   Compiling ureq v3.3.0
+   Compiling cargo-pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/cargo-pgrx)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.08s
+     Running `/home/fkomauli/projects/other/pgrx/target/debug/cargo-pgrx pgrx install --test --pg-config /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config --features 'pg_test proptest cshim pg16' --no-default-features`
+    Ignoring feature `proptest`
+    Ignoring feature `cshim`
+       Using PgConfig("pg16") and `pg_config` from /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config
+    Building extension with features pg_test pg16
+     Running command "/home/fkomauli/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/cargo" "rustc" "--lib" "--manifest-path" "/home/fkomauli/projects/other/pgrx/pgrx-examples/custom_sql/Cargo.toml" "--features" "pg_test pg16" "--no-default-features" "--message-format=json-render-diagnostics" "--" "-C" "link-arg=-Wl,--no-gc-sections"
+   Compiling custom_sql v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/custom_sql)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.31s
+  Installing extension
+     Copying control file to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/custom_sql.control
+     Copying shared library to /home/fkomauli/.pgrx/16.8/pgrx-install/lib/postgresql/custom_sql.so
+  Discovered 14 SQL entities: 3 schemas (3 unique), 3 functions, 1 types, 1 enums, 6 sqls, 0 ords, 0 hashes, 0 aggregates, 0 triggers
+     Writing SQL entities to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/custom_sql--0.0.0.sql
+    Finished installing custom_sql
+test tests::pg_test_ordering ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.27s
+
+     Running unittests src/lib.rs (target/debug/deps/custom_types-0894296c50a06073)
+
+running 8 tests
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.40
+   Compiling rustls-webpki v0.103.13
+   Compiling rustls-platform-verifier v0.6.2
+   Compiling ureq v3.3.0
+   Compiling cargo-pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/cargo-pgrx)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.05s
+     Running `/home/fkomauli/projects/other/pgrx/target/debug/cargo-pgrx pgrx install --test --pg-config /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config --features 'pg_test pg16 proptest cshim' --no-default-features`
+    Ignoring feature `proptest`
+    Ignoring feature `cshim`
+       Using PgConfig("pg16") and `pg_config` from /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config
+    Building extension with features pg_test pg16
+     Running command "/home/fkomauli/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/cargo" "rustc" "--lib" "--manifest-path" "/home/fkomauli/projects/other/pgrx/pgrx-examples/custom_types/Cargo.toml" "--features" "pg_test pg16" "--no-default-features" "--message-format=json-render-diagnostics" "--" "-C" "link-arg=-Wl,--no-gc-sections"
+   Compiling custom_types v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/custom_types)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.02s
+  Installing extension
+     Copying control file to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/custom_types.control
+     Copying shared library to /home/fkomauli/.pgrx/16.8/pgrx-install/lib/postgresql/custom_types.so
+  Discovered 77 SQL entities: 5 schemas (1 unique), 57 functions, 8 types, 1 enums, 3 sqls, 2 ords, 1 hashes, 0 aggregates, 0 triggers
+     Writing SQL entities to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/custom_types--0.0.0.sql
+    Finished installing custom_types
+test complex::tests::pg_test_known_animals_via_spi ... ok
+test rust_enum::tests::pg_test_some_enum ... ok
+test hexint::tests::pg_test_hexint_input_func ... ok
+test hexint::tests::pg_test_hexint_output_func ... ok
+test alignment::tests::pg_test_alignment_is_correct ... ok
+test ordered::tests::pg_test_ordering_via_spi ... ok
+test hexint::tests::pg_test_hash ... ok
+test hexint::tests::pg_test_commutator ... ok
+
+test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.97s
+
+     Running unittests src/lib.rs (target/debug/deps/datetime-f6f8963e48f23a92)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/errors-c2245b0533e0a82e)
+
+running 1 test
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.40
+   Compiling rustls-webpki v0.103.13
+   Compiling rustls-platform-verifier v0.6.2
+   Compiling ureq v3.3.0
+   Compiling cargo-pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/cargo-pgrx)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.06s
+     Running `/home/fkomauli/projects/other/pgrx/target/debug/cargo-pgrx pgrx install --test --pg-config /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config --features 'proptest cshim pg_test pg16' --no-default-features`
+    Ignoring feature `proptest`
+    Ignoring feature `cshim`
+       Using PgConfig("pg16") and `pg_config` from /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config
+    Building extension with features pg_test pg16
+     Running command "/home/fkomauli/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/cargo" "rustc" "--lib" "--manifest-path" "/home/fkomauli/projects/other/pgrx/pgrx-examples/errors/Cargo.toml" "--features" "pg_test pg16" "--no-default-features" "--message-format=json-render-diagnostics" "--" "-C" "link-arg=-Wl,--no-gc-sections"
+   Compiling errors v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/errors)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.24s
+  Installing extension
+     Copying control file to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/errors.control
+     Copying shared library to /home/fkomauli/.pgrx/16.8/pgrx-install/lib/postgresql/errors.so
+  Discovered 11 SQL entities: 1 schemas (1 unique), 10 functions, 0 types, 0 enums, 0 sqls, 0 ords, 0 hashes, 0 aggregates, 0 triggers
+     Writing SQL entities to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/errors--0.0.0.sql
+    Finished installing errors
+test tests::pg_test_it ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.17s
+
+     Running unittests src/lib.rs (target/debug/deps/hooks-31b066a95d90c3e5)
+
+running 4 tests
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.40
+   Compiling rustls-webpki v0.103.13
+   Compiling rustls-platform-verifier v0.6.2
+   Compiling ureq v3.3.0
+   Compiling cargo-pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/cargo-pgrx)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.06s
+     Running `/home/fkomauli/projects/other/pgrx/target/debug/cargo-pgrx pgrx install --test --pg-config /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config --features 'pg16 pg_test proptest cshim' --no-default-features`
+    Ignoring feature `proptest`
+    Ignoring feature `cshim`
+       Using PgConfig("pg16") and `pg_config` from /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config
+    Building extension with features pg16 pg_test
+     Running command "/home/fkomauli/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/cargo" "rustc" "--lib" "--manifest-path" "/home/fkomauli/projects/other/pgrx/pgrx-examples/hooks/Cargo.toml" "--features" "pg16 pg_test" "--no-default-features" "--message-format=json-render-diagnostics" "--" "-C" "link-arg=-Wl,--no-gc-sections"
+   Compiling hooks v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/hooks)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.21s
+  Installing extension
+     Copying control file to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/hooks.control
+     Copying shared library to /home/fkomauli/.pgrx/16.8/pgrx-install/lib/postgresql/hooks.so
+  Discovered 5 SQL entities: 1 schemas (1 unique), 4 functions, 0 types, 0 enums, 0 sqls, 0 ords, 0 hashes, 0 aggregates, 0 triggers
+     Writing SQL entities to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/hooks--0.0.0.sql
+    Finished installing hooks
+test tests::pg_test_truncate_from_bob ... ok
+test tests::pg_test_delete_without_where ... ok
+test tests::pg_test_delete_with_where ... ok
+test tests::pg_test_truncate_from_superuser ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.17s
+
+     Running unittests src/lib.rs (target/debug/deps/nostd-71c8bfd1b95a8e39)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/numeric-5d65abdda62e4107)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/operators-2af6b70ff2d01294)
+
+running 1 test
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.40
+   Compiling rustls-webpki v0.103.13
+   Compiling rustls-platform-verifier v0.6.2
+   Compiling ureq v3.3.0
+   Compiling cargo-pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/cargo-pgrx)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.08s
+     Running `/home/fkomauli/projects/other/pgrx/target/debug/cargo-pgrx pgrx install --test --pg-config /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config --features 'cshim proptest pg_test pg16' --no-default-features`
+    Ignoring feature `cshim`
+    Ignoring feature `proptest`
+       Using PgConfig("pg16") and `pg_config` from /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config
+    Building extension with features pg_test pg16
+     Running command "/home/fkomauli/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/cargo" "rustc" "--lib" "--manifest-path" "/home/fkomauli/projects/other/pgrx/pgrx-examples/operators/Cargo.toml" "--features" "pg_test pg16" "--no-default-features" "--message-format=json-render-diagnostics" "--" "-C" "link-arg=-Wl,--no-gc-sections"
+   Compiling operators v0.0.0 (/home/fkomauli/projects/other/pgrx/pgrx-examples/operators)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.52s
+  Installing extension
+     Copying control file to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/operators.control
+     Copying shared library to /home/fkomauli/.pgrx/16.8/pgrx-install/lib/postgresql/operators.so
+  Discovered 32 SQL entities: 1 schemas (1 unique), 24 functions, 3 types, 0 enums, 0 sqls, 2 ords, 2 hashes, 0 aggregates, 0 triggers
+     Writing SQL entities to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/operators--0.0.0.sql
+    Finished installing operators
+test pgvarlena::tests::pg_test_varlena_thing ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 5.49s
+
+     Running unittests src/lib.rs (target/debug/deps/parallel_scan_lwlock-eee982f03d6eb249)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pgrx-3a607e6d5aeef57a)
+
+running 19 tests
+test iter::tests::setof_iterator_is_not_argument_sql ... ok
+test list::tests::list_nil_into_ptr_is_null ... ok
+test iter::tests::table_iterator_returns_first_error ... ok
+test list::tests::list_nil_as_ptr_is_null ... ok
+test iter::tests::table_iterator_maps_multi_column_returns ... ok
+test list::tests::list_nil_is_default ... ok
+test list::tests::list_nil_is_empty ... ok
+test pgbox::tests::from_pg_non_null_as_ptr_matches ... ok
+test pgbox::tests::from_pg_null_as_ptr_returns_null ... ok
+test pgbox::tests::from_pg_non_null_is_not_null ... ok
+test pgbox::tests::from_pg_null_is_null ... ok
+test pgbox::tests::into_pg_non_null_returns_same_ptr ... ok
+test pgbox::tests::into_pg_null_returns_null ... ok
+test prelude::tests::prelude_reexports_impl_sql_translatable ... ok
+test varlena::tests::encode_vlen_1b_always_sets_short_flag ... ok
+test varlena::tests::encode_vlen_1b_known_values ... ok
+test varlena::tests::encode_vlen_4b_known_values ... ok
+test varlena::tests::encode_vlen_1b_roundtrip ... ok
+test varlena::tests::encode_vlen_4b_roundtrip ... ok
+
+test result: ok. 19 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pgrx_bench-1d3ea18806c2f5d5)
+
+running 7 tests
+test tests::criterion_summary_matches_expected_labels ... ok
+test tests::find_new_report_dir_prefers_criterion_new_directory ... ok
+test tests::materialize_baseline_artifacts_writes_criterion_base_layout ... ok
+test tests::collect_artifacts_includes_change_estimates_when_present ... ok
+test tests::criterion_p_value_with_rng_is_high_for_identical_samples ... ok
+test tests::criterion_p_value_with_rng_detects_large_regression ... ok
+test tests::parse_comparison_uses_persisted_baseline_artifacts ... ok
+
+test result: ok. 7 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pgrx_bindgen-f14ce31d4feb1c7d)
+
+running 0 tests
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pgrx_macros-15ba6af15f13e01b)
+
+running 5 tests
+test tests::different_long_names_get_different_shortened_names ... ok
+test tests::exactly_63_chars_unchanged ... ok
+test tests::exactly_64_chars_is_shortened ... ok
+test tests::short_name_unchanged ... ok
+test tests::very_long_name_fits_in_63 ... ok
+
+test result: ok. 5 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pgrx_pg_config-d03bc4ae5d216ddb)
+
+running 2 tests
+test parse_version ... ok
+test from_empty_env ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pgrx_pg_sys-cbd79f912cbc4ace)
+
+running 1 test
+test submodules::datum::test::roundtrip_integers ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pgrx_sql_entity_graph-c884617214851fb4)
+
+running 64 tests
+test extension_sql::entity::tests::build_type_accepts_extension_owned_types ... ok
+test control_file::tests::uses_the_supplied_cargo_version_for_substitution ... ok
+test aggregate::aggregate_type::tests::solo ... ok
+test extension_sql::entity::tests::build_type_rejects_external_types ... ok
+test aggregate::tests::agg_missing_required ... ok
+test aggregate::aggregate_type::tests::list ... ok
+test extension_sql::entity::tests::function_declarations_do_not_carry_type_idents ... ok
+test extern_args::tests::parse_args ... ok
+test metadata::sql_translatable::tests::array_argument_sql_wraps_scalar_kinds ... ok
+test metadata::sql_translatable::tests::array_return_sql_wraps_scalar_kinds ... ok
+test metadata::sql_translatable::tests::impl_sql_translatable_sets_external_defaults ... ok
+test metadata::sql_translatable::tests::impl_sql_translatable_supports_arg_only_types ... ok
+test metadata::sql_translatable::tests::nested_composite_arrays_fail_fast ... ok
+test metadata::sql_translatable::tests::nested_numeric_arrays_fail_fast ... ok
+test metadata::sql_translatable::tests::nested_vec_arrays_fail_fast ... ok
+test pgrx_sql::tests::alter_extension_attaches_bare_function ... ok
+test pgrx_sql::tests::alter_extension_attaches_aggregate_with_args ... ok
+test pgrx_sql::tests::alter_extension_attaches_enum ... ok
+test pgrx_sql::tests::alter_extension_attaches_trigger ... ok
+test pgrx_sql::tests::alter_extension_attaches_operator_in_addition_to_function ... ok
+test pgrx_sql::tests::alter_extension_attaches_schema_but_skips_public ... ok
+test pgrx_sql::tests::alter_extension_attaches_ord_emits_family_and_class ... ok
+test pgrx_sql::tests::alter_extension_attaches_type_and_its_io_functions ... ok
+test pgrx_sql::tests::alter_extension_custom_sql_with_creates_emits_add_type ... ok
+test pgrx_sql::tests::alter_extension_attaches_hash_emits_family_and_class ... ok
+test pgrx_sql::tests::duplicate_type_ident_errors ... ok
+test pgrx_sql::tests::explicit_composite_array_aggregate_state_does_not_require_schema_resolution ... ok
+test pgrx_sql::tests::alter_extension_substitutes_module_pathname ... ok
+test pgrx_sql::tests::external_function_type_resolution_succeeds ... ok
+test pgrx_sql::tests::extension_sql_declared_type_in_custom_schema_prefixes_aggregate_state_type ... ok
+test pgrx_sql::tests::extension_sql_declared_type_orders_before_function_and_aggregate ... ok
+test pgrx_sql::tests::no_alter_extension_mode_matches_pre_feature_output ... ok
+test pgrx_sql::tests::resolve_item_rejects_ambiguous_name_without_path ... ok
+test pgrx_sql::tests::item_slice_uses_control_schema_without_changing_full_schema ... ok
+test pgrx_sql::tests::alter_extension_includes_argument_types ... ok
+test pgrx_sql::tests::item_slice_keeps_external_array_types_unqualified_and_honors_pg_schema ... ok
+test pgrx_sql::tests::explicit_composite_array_type_does_not_require_schema_resolution ... ok
+test pgrx_sql::tests::explicit_composite_type_does_not_require_schema_resolution ... ok
+test pgrx_sql::tests::alter_extension_custom_sql_without_creates_warns ... ok
+test pgrx_sql::tests::skipped_function_argument_does_not_require_schema_resolution ... ok
+test pgrx_sql::tests::unresolved_aggregate_argument_type_ident_errors ... ok
+test pgrx_sql::tests::to_sql_for_items_emits_only_targets_and_deps_with_lib_substitution ... ok
+test pgrx_sql::tests::unresolved_aggregate_mstype_type_ident_errors ... ok
+test pgrx_sql::tests::declared_type_cycle_prefers_explicit_requirements_with_shell_type ... ok
+test pgrx_sql::tests::unresolved_aggregate_stype_type_ident_errors ... ok
+test pgrx_sql::tests::unresolved_function_argument_type_ident_errors ... ok
+test pgrx_sql::tests::unresolved_function_return_type_ident_errors ... ok
+test section::tests::ignores_trailing_zero_padding ... ok
+test section::tests::round_trip_basic_entry ... ok
+test section::tests::recognizes_macho_qualified_section_name ... ok
+test section::tests::round_trip_function_metadata_type_preserves_composite_array_mappings ... ok
+test section::tests::round_trip_function_metadata_type_preserves_nested_array_errors ... ok
+test section::tests::round_trip_function_metadata_type_preserves_type_origin ... ok
+test section::tests::round_trip_sql_declared_function_skips_type_ident ... ok
+test section::tests::round_trip_sql_declared_type_preserves_type_ident_and_sql ... ok
+test section::tests::schema_section_names_fit_windows_image_limits ... ok
+test section::tests::sentinel_entry_decodes_as_empty ... ok
+test section::tests::sentinel_entry_is_ignored_mid_section ... ok
+test section::tests::zero_filled_section_decodes_as_empty ... ok
+test section::tests::round_trip_function_metadata_type_preserves_array_mappings ... ok
+test used_type::tests::internal_is_marked_optional ... ok
+test used_type::tests::nullable_is_marked_optional ... ok
+test aggregate::tests::agg_required_only ... ok
+test aggregate::tests::agg_all_options ... ok
+
+test result: ok. 64 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pgrx_tests-5b887e5e7e4c34d1)
+
+running 2 tests
+test framework::tests::cargo_pgrx_prefers_explicit_override ... ok
+test framework::tests::workspace_cargo_pgrx_runs_from_source_even_with_a_target_binary ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+
+     Running unittests src/lib.rs (target/debug/deps/pgrx_unit_tests-ff0c98969ca531a5)
+
+running 569 tests
+   Compiling ring v0.17.14
+   Compiling rustls v0.23.40
+   Compiling rustls-webpki v0.103.13
+   Compiling rustls-platform-verifier v0.6.2
+   Compiling ureq v3.3.0
+   Compiling cargo-pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/cargo-pgrx)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.08s
+     Running `/home/fkomauli/projects/other/pgrx/target/debug/cargo-pgrx pgrx install --test --pg-config /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config --features 'pg_test cshim pg16 proptest' --no-default-features`
+       Using PgConfig("pg16") and `pg_config` from /home/fkomauli/.pgrx/16.8/pgrx-install/bin/pg_config
+    Building extension with features pg_test cshim pg16 proptest
+     Running command "/home/fkomauli/.rustup/toolchains/1.96.0-x86_64-unknown-linux-gnu/bin/cargo" "rustc" "--lib" "--manifest-path" "/home/fkomauli/projects/other/pgrx/pgrx-unit-tests/Cargo.toml" "--features" "pg_test cshim pg16 proptest" "--no-default-features" "--message-format=json-render-diagnostics" "--" "-C" "link-arg=-Wl,--no-gc-sections"
+   Compiling pgrx-pg-sys v0.18.1 (/home/fkomauli/projects/other/pgrx/pgrx-pg-sys)
+   Compiling pgrx v0.18.1 (/home/fkomauli/projects/other/pgrx/pgrx)
+   Compiling pgrx-tests v0.18.1 (/home/fkomauli/projects/other/pgrx/pgrx-tests)
+   Compiling pgrx-unit-tests v0.18.1 (/home/fkomauli/projects/other/pgrx/pgrx-unit-tests)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 14.31s
+  Installing extension
+     Copying control file to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/pgrx_unit_tests.control
+     Copying shared library to /home/fkomauli/.pgrx/16.8/pgrx-install/lib/postgresql/pgrx_unit_tests.so
+  Discovered 1127 SQL entities: 64 schemas (8 unique), 1004 functions, 22 types, 2 enums, 6 sqls, 1 ords, 1 hashes, 10 aggregates, 17 triggers
+     Writing SQL entities to /home/fkomauli/.pgrx/16.8/pgrx-install/share/postgresql/extension/pgrx_unit_tests--1.0.sql
+    Finished installing pgrx_unit_tests
+test tests::array_borrowed::tests::pg_borrow_test_optional_array ... ok
+test tests::aggregate_tests::tests::pg_aggregate_demo_custom_state ... ok
+test tests::array_borrowed::tests::pg_borrow_test_optional_array_with_default ... ok
+test tests::array_borrowed::tests::pg_borrow_test_count_true ... ok
+test tests::array_borrowed::tests::pg_borrow_test_arr_sort_uniq_with_null ... ok
+test tests::array_borrowed::tests::pg_borrow_test_get_arr_ndim ... ok
+test tests::array_borrowed::tests::pg_borrow_test_cstring_array ... ok
+test tests::aggregate_tests::tests::pg_aggregate_demo_sum ... ok
+test tests::anyarray_tests::tests::pg_test_anyarray_iter_arg ... ok
+test tests::aggregate_tests::tests::pg_aggregate_demo_sub ... ok
+test tests::anynumeric_tests::tests::pg_test_anynumeric_arg ... ok
+test tests::array_borrowed::tests::pg_borrow_test_get_arr_data_ptr_nth_elem ... ok
+test tests::aggregate_tests::tests::pg_aggregate_first_anyelement ... ok
+test tests::array_borrowed::tests::pg_borrow_test_display_get_arr_nullbitmap ... ok
+test tests::anyelement_tests::tests::pg_test_anyelement_arg ... ok
+test tests::array_borrowed::tests::pg_borrow_test_arr_data_ptr ... ok
+test tests::array_borrowed::tests::pg_borrow_test_arr_sort_uniq ... ok
+test tests::aggregate_tests::tests::pg_aggregate_first_jsonb ... ok
+test tests::aggregate_tests::tests::pg_aggregate_first_json ... ok
+test tests::array_borrowed::tests::pg_borrow_test_count_nulls ... ok
+test tests::anyarray_tests::tests::pg_test_anyarray_arg ... ok
+test tests::array_borrowed::tests::pg_borrow_test_arr_to_vec ... ok
+test tests::array_borrowed::tests::pg_borrow_test_return_text_array ... ok
+test tests::aggregate_tests::tests::pg_aggregate_demo_percentile_disc ... ok
+test tests::array_tests::tests::pg_test_array_of_points ... ok
+test tests::array_tests::tests::pg_test_cstring_array ... ok
+test tests::array_tests::tests::pg_test_get_arr_ndim ... ok
+test tests::array_borrowed::tests::pg_borrow_test_serde_serialize_array_i32 ... ok
+test tests::array_tests::tests::pg_test_display_get_arr_nullbitmap ... ok
+test tests::array_tests::tests::pg_test_i16_slice ... ok
+test tests::array_tests::tests::pg_test_f32_slice ... ok
+test tests::array_borrowed::tests::pg_borrow_test_slice_to_array ... ok
+test tests::array_tests::tests::pg_test_f64_slice ... ok
+test tests::array_tests::tests::pg_test_arr_data_ptr ... ok
+test tests::array_tests::tests::pg_test_arr_sort_uniq ... ok
+test tests::array_tests::tests::pg_test_count_nulls ... ok
+test tests::array_tests::tests::pg_test_array_deny_nulls ... ok
+test tests::array_borrowed::tests::pg_borrow_test_sum_array_i64 ... ok
+test tests::array_borrowed::tests::pg_read_array_back ... ok
+test tests::array_borrowed::tests::pg_borrow_test_sum_array_i32 ... ok
+test tests::array_tests::tests::pg_test_arr_to_vec ... ok
+test tests::attributes_tests::tests::pg_test_for_ignore_attribute ... ignored, This test should be ignored.
+test tests::array_borrowed::tests::pg_borrow_test_return_zero_length_vec ... ok
+test tests::array_tests::tests::pg_test_count_true ... ok
+test tests::array_tests::tests::pg_test_get_arr_data_ptr_nth_elem ... ok
+test tests::array_borrowed::tests::pg_error_cases ... ok
+test tests::array_tests::tests::pg_test_enum_array_roundtrip ... ok
+test tests::array_tests::tests::pg_test_optional_array ... ok
+test tests::array_tests::tests::pg_test_i64_slice ... ok
+test tests::array_tests::tests::pg_test_i32_slice ... ok
+test tests::array_tests::tests::pg_test_serde_serialize_array_i32_deny_null ... ok
+test tests::array_tests::tests::pg_test_serde_serialize_array_i32 ... ok
+test tests::array_tests::tests::pg_test_slice_with_null ... ok
+test tests::array_tests::tests::pg_test_optional_array_with_default ... ok
+test tests::array_tests::tests::pg_test_slice_to_array ... ok
+test tests::array_tests::tests::pg_test_sum_array_i32 ... ok
+test tests::array_tests::tests::pg_test_sum_array_i64 ... ok
+test tests::array_tests::tests::pg_test_return_zero_length_vec ... ok
+test tests::array_tests::tests::pg_test_text_array_iter ... ok
+test tests::array_tests::tests::pg_test_text_array_via_getter ... ok
+test tests::array_tests::tests::pg_test_text_array_as_vec_string ... ok
+test tests::array_tests::tests::pg_test_return_text_array ... ok
+test tests::bgworker_tests::tests::pg_test_dynamic_bgworker_untracked ... ok
+test tests::bgworker_tests::tests::pg_test_dynamic_bgworker_untracked_termination_handle ... ok
+test tests::borrow_datum::tests::pg_test_clone_f64 ... ok
+test tests::complex::tests::type_ident_uses_definition_module_path ... ok
+test tests::bgworker_tests::tests::pg_test_background_worker_transaction_return ... ok
+test tests::borrow_datum::tests::pg_test_clone_i8 ... ok
+test tests::bindings_of_inline_fn_tests::tests::pg_test_static_inline_fns ... ok
+test tests::bytea_tests::tests::pg_test_bytea_is_empty ... ok
+test tests::borrow_datum::tests::pg_test_clone_i16 ... ok
+test tests::borrow_datum::tests::pg_test_clone_i32 ... ok
+test tests::borrow_datum::tests::pg_test_clone_point ... ok
+test tests::bgworker_tests::tests::pg_test_dynamic_bgworker ... ok
+test tests::bytea_tests::tests::pg_test_bytea_roundtrip ... ok
+test tests::borrow_datum::tests::pg_test_clone_oid ... ok
+test tests::bytea_tests::tests::pg_test_return_vec_subvec ... ok
+test tests::cfg_tests::tests::pg_test_cfg_exists ... ok
+test tests::bytea_tests::tests::pg_test_return_bytes_slice ... ok
+test tests::borrow_datum::tests::pg_test_clone_bool ... ok
+test tests::bytea_tests::tests::pg_test_return_vec_bytes ... ok
+test tests::bytea_tests::tests::pg_test_return_bytes ... ok
+test tests::bytea_tests::tests::pg_test_bytea_arg_length ... ok
+test tests::borrow_datum::tests::pg_test_clone_str ... ok
+test tests::bgworker_tests::tests::pg_test_dynamic_worker_allocation_failure ... ok
+test tests::composite_type_tests::tests::pg_test_array_of_composite_type ... ok
+test tests::datetime_tests::tests::pg_test_accept_date_infinity ... ok
+test tests::datetime_tests::tests::pg_test_accept_date_large_date ... ok
+test tests::datetime_tests::tests::pg_test_accept_date_neg_infinity ... ok
+test tests::datetime_tests::tests::pg_test_accept_date_round_trip_large_date ... ok
+test tests::datetime_tests::tests::pg_test_accept_date_now ... ok
+test tests::datetime_tests::tests::pg_test_accept_interval_neg_random ... ok
+test tests::datetime_tests::tests::pg_test_accept_date_round_trip_random ... ok
+test tests::datetime_tests::tests::pg_test_accept_date_random ... ok
+test tests::datetime_tests::tests::pg_test_accept_interval_round_trip_random ... ok
+test tests::datetime_tests::tests::pg_test_accept_date_tomorrow ... ok
+test tests::datetime_tests::tests::pg_test_accept_interval_round_trip_neg_random ... ok
+test tests::datetime_tests::tests::pg_test_accept_interval_random ... ok
+test tests::datetime_tests::tests::pg_test_accept_time_tomorrow ... ok
+test tests::datetime_tests::tests::pg_test_accept_date_yesterday ... ok
+test tests::datetime_tests::tests::pg_test_accept_time_random ... ok
+test tests::datetime_tests::tests::pg_test_accept_time_yesterday ... ok
+test tests::datetime_tests::tests::pg_test_accept_time_now ... ok
+test tests::datetime_tests::tests::pg_test_accept_timestamp_with_time_zone ... ok
+test tests::datetime_tests::tests::pg_test_accept_timestamp ... ok
+test tests::datetime_tests::tests::pg_test_accept_timestamp_with_time_zone_not_utc ... ok
+test tests::datetime_tests::tests::pg_test_accept_timestamp_with_time_zone_datetime_round_trip ... ok
+test tests::datetime_tests::tests::pg_test_accept_timestamp_with_time_zone_offset_round_trip ... ok
+test tests::datetime_tests::tests::pg_test_add_intervals ... ok
+test tests::datetime_tests::tests::pg_test_date_serialization ... ok
+test tests::datetime_tests::tests::pg_test_add_date_time ... ok
+test tests::datetime_tests::tests::pg_test_duration_to_interval_err ... ok
+test tests::datetime_tests::tests::pg_test_add_time_interval ... ok
+test tests::datetime_tests::tests::pg_test_interval_serialization ... ok
+test tests::datetime_tests::tests::pg_test_interval_from_seconds ... ok
+test tests::datetime_tests::tests::pg_test_is_timestamp_utc ... ok
+test tests::datetime_tests::tests::pg_test_convert_time_with_time_zone_now ... ok
+test tests::datetime_tests::tests::pg_test_duration_to_interval_conversion ... ok
+test tests::datetime_tests::tests::pg_test_negative_interval_to_duration_conversion ... ok
+test tests::datetime_tests::tests::pg_test_from_str ... ok
+test tests::default_arg_value_tests::tests::make_idea_happy ... ok
+test tests::datetime_tests::tests::pg_test_is_timestamp_with_time_zone_utc ... ok
+test tests::datetime_tests::tests::pg_test_old_date ... ok
+test tests::datetime_tests::tests::pg_test_interval_from_mismatched_signs ... ok
+test tests::datetime_tests::tests::pg_test_interval_to_duration_conversion ... ok
+test tests::datetime_tests::tests::pg_test_return_3pm_mountain_time ... ok
+test tests::enum_type_tests::tests::make_idea_happy ... ok
+test tests::datetime_tests::tests::pg_test_time_serialization ... ok
+test tests::fcinfo_tests::tests::make_idea_happy ... ok
+test tests::datetime_tests::tests::pg_test_time_with_timezone_serialization ... ok
+test tests::datetime_tests::tests::pg_test_timestamp_infinity ... ok
+test tests::datetime_tests::tests::pg_test_timestamp_serialization ... ok
+test tests::datetime_tests::tests::pg_test_timestamptz ... ok
+test tests::datetime_tests::tests::pg_test_timestamp_with_timezone_serialization ... ok
+test tests::datetime_tests::tests::pg_test_timezone_offset_us_eastern ... ok
+test tests::datetime_tests::tests::pg_test_timezone_offset_cest ... ok
+test tests::datetime_tests::tests::pg_test_timezone_offset_unknown ... ok
+test tests::datetime_tests::tests::pg_test_timestamp_with_timezone_infinity ... ok
+test tests::default_arg_value_tests::tests::pg_test_default_argument ... ok
+test tests::default_arg_value_tests::tests::pg_test_negative_default_argument ... ok
+test tests::datetime_tests::tests::pg_test_timetz_from_time_and_zone ... ok
+test tests::fcinfo_tests::tests::pg_test_add_two_numbers ... ok
+test tests::datetime_tests::tests::pg_test_to_posix_time ... ok
+test tests::datetime_tests::tests::pg_test_to_julian_days ... ok
+test tests::datetime_tests::tests::pg_test_to_pg_epoch_days ... ok
+test tests::default_arg_value_tests::tests::pg_test_option_default_argument_specified ... ok
+test tests::default_arg_value_tests::tests::pg_test_default_argument_specified ... ok
+test tests::default_arg_value_tests::tests::pg_test_option_default_argument ... ok
+test tests::enum_type_tests::tests::pg_test_foo_enum ... ok
+test tests::fcinfo_tests::tests::pg_test_returns_none ... ok
+test tests::fcinfo_tests::tests::pg_test_returns_tuple ... ok
+test tests::fcinfo_tests::tests::pg_test_takes_bool ... ok
+test tests::fcinfo_tests::tests::pg_test_null_strict_type ... ok
+test tests::fcinfo_tests::tests::pg_test_returns_some ... ok
+test tests::fcinfo_tests::tests::pg_test_panics ... ok
+test tests::fcinfo_tests::tests::pg_test_returns_void ... ok
+test tests::fcinfo_tests::tests::pg_test_takes_i8 ... ok
+test tests::fcinfo_tests::tests::pg_test_takes_char ... ok
+test tests::fcinfo_tests::tests::pg_test_takes_f32 ... ok
+test tests::fcinfo_tests::tests::pg_test_same_name ... ok
+test tests::fcinfo_tests::tests::pg_test_takes_i16 ... ok
+test tests::fcinfo_tests::tests::pg_test_takes_i64 ... ok
+test tests::fcinfo_tests::tests::pg_test_takes_option_with_non_null_arg ... ok
+test tests::fcinfo_tests::tests::pg_test_takes_f64 ... ok
+test tests::fcinfo_tests::tests::pg_test_takes_option_with_null_arg ... ok
+test tests::fcinfo_tests::tests::pg_test_takes_i32 ... ok
+test tests::fcinfo_tests::tests::pg_test_takes_str ... ok
+test tests::fcinfo_tests::tests::pg_test_takes_string ... ok
+test tests::fn_call_tests::tests::pg_blank_function ... ok
+test tests::fn_call_tests::tests::pg_test_my_int4eq ... ok
+test tests::fn_call_tests::tests::pg_test_int4eq_eq ... ok
+test tests::fn_call_tests::tests::pg_test_incompatible_return_type ... ok
+test tests::fn_call_tests::tests::pg_test_null_arg_none ... ok
+test tests::fn_call_tests::tests::pg_test_with_arg_and_two_defaults_no_args_1_arg ... ok
+test tests::fn_call_tests::tests::pg_test_func_with_collation ... ok
+test tests::fn_call_tests::tests::pg_invalid_identifier ... ok
+test tests::fn_call_tests::tests::pg_test_sql_int4eq ... ok
+test tests::fn_call_tests::tests::pg_test_with_default ... ok
+test tests::fn_call_tests::tests::pg_test_null_arg_some ... ok
+test tests::fn_call_tests::tests::pg_test_strict ... ok
+test tests::fn_call_tests::tests::pg_test_too_many_args ... ok
+test tests::fn_call_tests::tests::pg_test_with_arg_and_two_defaults_no_args ... ok
+test tests::fn_call_tests::tests::pg_test_with_functional_default ... ok
+test tests::fn_call_tests::tests::pg_test_int4eq_ne ... ok
+test tests::fn_call_tests::tests::pg_test_with_arg_and_two_defaults_no_args_2_args ... ok
+test tests::fn_call_tests::tests::pg_test_with_null_default ... ok
+test tests::fn_call_tests::tests::pg_test_with_only_default_ambiguous ... ok
+test tests::fn_call_tests::tests::pg_test_with_only_default_int4 ... ok
+test tests::fn_call_tests::tests::pg_test_with_two_defaults ... ok
+test tests::fn_call_tests::tests::pg_test_with_unspecified_default ... ok
+test tests::fn_call_tests::tests::pg_test_with_only_default_int8 ... ok
+test tests::fn_call_tests::tests::pg_unknown_function ... ok
+test tests::geo_tests::tests::pg_test_box_datum ... ok
+test tests::geo_tests::tests::pg_test_circle_datum ... ok
+test tests::from_into_datum_tests::tests::pg_test_cstring_roundtrip ... ok
+test tests::geo_tests::tests::pg_test_path_datum ... ok
+test tests::from_into_datum_tests::tests::pg_null_string_is_none ... ok
+test tests::from_into_datum_tests::tests::pg_test_incompatible_datum_returns_error ... ok
+test tests::geo_tests::tests::pg_test_lseg_datum ... ok
+test tests::geo_tests::tests::pg_test_fn_call_path_datum ... ok
+test tests::geo_tests::tests::pg_test_fn_call_polygon_datum ... ok
+test tests::geo_tests::tests::pg_test_line_datum ... ok
+test tests::geo_tests::tests::pg_test_point_datum ... ok
+test tests::geo_tests::tests::pg_test_polygon_datum ... ok
+test tests::guc_tests::tests::pg_test_assign_hook ... ok
+test tests::guc_tests::tests::pg_test_bool_guc ... ok
+test tests::guc_tests::tests::pg_test_guc_flags ... ok
+test tests::guc_tests::tests::pg_test_enum_guc ... ok
+test tests::guc_tests::tests::pg_test_show_hook ... ok
+test tests::guc_tests::tests::pg_test_int_guc ... ok
+test tests::guc_tests::tests::pg_test_float_guc ... ok
+test tests::guc_tests::tests::pg_test_string_guc ... ok
+test tests::heap_tuple::tests::pg_test_create_dog ... ok
+test tests::heap_tuple::tests::pg_test_compatibility ... ok
+test tests::heap_tuple::tests::pg_test_gets_name_field ... ok
+test tests::guc_tests::tests::pg_test_mb_guc ... ok
+test tests::guc_tests::tests::pg_test_string_guc_null_default ... ok
+test tests::heap_tuple::tests::pg_test_gets_name_field_strict ... ok
+test tests::heap_tuple::tests::pg_test_gets_name_field_variadic ... ok
+test tests::heap_tuple::tests::pg_test_gets_name_field_default ... ok
+test tests::heap_tuple::tests::pg_test_missing_field ... ok
+test tests::heap_tuple::tests::pg_test_missing_number ... ok
+test tests::heap_tuple::tests::pg_test_missing_type ... ok
+test tests::heap_tuple::tests::pg_test_scritch ... ok
+test tests::heap_tuple::tests::pg_test_scritch_strict ... ok
+test tests::inet_tests::tests::pg_test_take_and_return_inet ... ok
+test tests::inet_tests::tests::pg_test_deserialize_inet ... ok
+test tests::heap_tuple::tests::pg_test_new_composite_type ... ok
+test tests::internal_tests::tests::pg_internal_get_or_insert ... ok
+test tests::inet_tests::tests::pg_test_serialize_inet ... ok
+test tests::internal_tests::tests::pg_internal_get_or_insert_default ... ok
+test tests::internal_tests::tests::pg_internal_get_or_insert_with ... ok
+test tests::heap_tuple::tests::pg_test_wrong_type_assumed ... ok
+test tests::internal_tests::tests::pg_internal_insert ... ok
+test tests::json_tests::tests::pg_test_json ... ok
+test tests::json_tests::tests::pg_test_json_arg ... ok
+test tests::json_tests::tests::pg_test_jsonb ... ok
+test tests::json_tests::tests::pg_test_jsonb_arg ... ok
+test tests::list_tests::tests::pg_list_length_drained ... ok
+test tests::log_tests::tests::pg_test_debug2 ... ok
+test tests::list_tests::tests::pg_list_length_1000 ... ok
+test tests::log_tests::tests::pg_test_debug4 ... ok
+test tests::log_tests::tests::pg_test_debug1 ... ok
+test tests::list_tests::tests::pg_list_length_10 ... ok
+test tests::log_tests::tests::pg_test_debug3 ... ok
+test tests::log_tests::tests::pg_test_check_for_interrupts ... ok
+test tests::log_tests::tests::pg_test_ereport ... ok
+test tests::log_tests::tests::pg_test_debug5 ... ok
+test tests::log_tests::tests::pg_test_debug_skips_arg_evaluation ... ok
+test tests::log_tests::tests::pg_test_error ... ok
+test tests::log_tests::tests::pg_test_ereport_domain ... ok
+test tests::log_tests::tests::pg_test_ereport_domain_value ... ok
+test tests::heap_tuple::tests::pg_test_tuple_desc_clone ... ok
+test tests::log_tests::tests::pg_test_info ... ok
+test tests::log_tests::tests::pg_test_notice ... ok
+test tests::memcxt_tests::tests::pg_parent ... ok
+test tests::log_tests::tests::pg_test_warning_evaluates_args ... ok
+test tests::log_tests::tests::pg_test_panic ... ok
+test tests::long_name_tests::tests::pg_test_that_a_pg_test_function_with_a_very_long_name_exceeding_sixty_three_characters_still_works ... ok
+test tests::log_tests::tests::pg_test_log ... ok
+test tests::memcxt_tests::tests::pg_test_current_owned_memory_context_drop ... ok
+test tests::memcxt_tests::tests::pg_test_leak_and_drop ... ok
+test tests::log_tests::tests::pg_test_warn ... ok
+test tests::memcxt_tests::tests::pg_test_current_owned_memory_context_drop_when_set_current_twice ... ok
+test tests::memcxt_tests::tests::pg_test_leak_and_drop_with_panic ... ok
+test tests::memcxt_tests::tests::pg_switch_to_should_switch_back_on_panic ... ok
+test tests::name_tests::tests::pg_renamed_func ... ok
+test tests::numeric_tests::tests::pg_select_a_numeric ... ok
+test tests::numeric_tests::tests::pg_test_anynumeric_sum ... ok
+test tests::numeric_tests::tests::pg_test_limits ... ok
+test tests::numeric_tests::tests::pg_test_ordering ... ok
+test tests::numeric_tests::tests::pg_test_deserialize_numeric ... ok
+test tests::numeric_tests::tests::pg_test_nan_ordering ... ok
+test tests::numeric_tests::tests::pg_test_bad_conversions ... ok
+test tests::numeric_tests::tests::pg_test_return_a_f64_numeric ... ok
+test tests::numeric_tests::tests::pg_test_option_anynumeric_sum ... ok
+test tests::oid_tests::tests::pg_test_completely_unreasonable_but_still_valid_oid ... ok
+test tests::numeric_tests::tests::pg_test_return_a_u64_numeric ... ok
+test tests::numeric_tests::tests::pg_test_return_an_i32_numeric ... ok
+test tests::oid_tests::tests::pg_test_reasonable_oid ... ok
+test tests::pg_cast_tests::tests::pg_assert_cast_func_is_immutable ... ok
+test tests::pg_cast_tests::tests::pg_assert_cast_is_implicit ... ok
+test tests::pg_extern_tests::tests::pg_test_anyele_type ... ok
+test tests::pg_cast_tests::tests::pg_assert_composite_cast_exists ... ok
+test tests::array_borrowed::tests::pg_borrow_test_sum_array_i32_overflow ... ok
+test tests::pg_cast_tests::tests::pg_test_pg_cast_assignment_type_cast ... ok
+test tests::pg_cast_tests::tests::pg_test_pg_cast_explicit_type_cast ... ok
+test tests::pg_extern_tests::tests::pg_test_overridden_sql_with_fn_name ... ok
+test tests::pg_cast_tests::tests::pg_test_pg_cast_implicit_type_cast ... ok
+test tests::pg_extern_tests::tests::pg_test_create_or_replace ... ok
+test tests::pg_operator_tests::tests::pg_test_composite_operator ... ok
+test tests::pg_extern_tests::tests::pg_test_name ... ok
+test tests::pg_extern_tests::tests::pg_test_immutable ... ok
+test tests::pg_extern_tests::tests::pg_test_security_invoker ... ok
+test tests::pg_operator_tests::tests::pg_test_correct_schema ... ok
+test tests::pg_extern_tests::tests::pg_test_security_definer ... ok
+test tests::pg_try_tests::tests::pg_test_drop ... ok
+test tests::pg_try_tests::tests::pg_test_drop_with_panic_and_ignore_and_finally ... ok
+test tests::array_tests::tests::pg_test_sum_array_i32_overflow ... ok
+test tests::pg_try_tests::tests::pg_test_drop_with_panic_catch_and_ignore ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_catch_and_rethrow_with_error ... ok
+test tests::pg_try_tests::tests::pg_test_drop_with_panic_no_catch ... ok
+test tests::pg_try_tests::tests::pg_test_drop_with_panic_catch_and_rethrow ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_catch_and_rethrow_no_error ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_execute_no_error ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_execute_no_error_no_catch ... ok
+test tests::pg_try_tests::tests::pg_test_panic_in_extern_c_fn ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_execute_with_error_report ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_execute_with_crash ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_execute_with_crash_ignore ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_execute_with_crash_rethrow ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_finally_with_catch ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_execute_with_error ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_finally ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_ignore_panic ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_finally_with_catch_rethrow ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_no_error_with_catch ... ok
+test tests::pg_try_tests::tests::pg_test_postgres_error_runs_drop_and_has_backtrace ... ok
+test tests::pg_try_tests::tests::pg_test_pg_try_throw_different_error ... ok
+test tests::pg_try_tests::tests::pg_test_postgres_error_contains_backtrace ... ok
+test tests::pgbox_tests::tests::pg_pgbox_alloc ... ok
+test tests::postgres_type_tests::tests::pg_test_call_with_enum_value ... ok
+test tests::postgres_type_tests::tests::pg_test_call_with_value ... ok
+test tests::postgres_type_tests::tests::pg_test_jsontype ... ok
+test tests::postgres_type_tests::tests::pg_test_call_with_enum_null ... ok
+test tests::postgres_type_tests::tests::pg_test_call_with_null ... ok
+test tests::postgres_type_tests::tests::pg_test_json_enum_type ... ok
+test tests::pgbox_tests::tests::pg_pgbox_alloc0 ... ok
+test tests::postgres_type_tests::tests::pg_test_my_enum_type ... ok
+test tests::postgres_type_tests::tests::pg_test_mytype ... ok
+test tests::postgres_type_tests::tests::pg_test_serialized_enum_type ... ok
+test tests::postgres_type_tests::tests::pg_test_serializedtype ... ok
+test tests::range_tests::tests::pg_test_accept_range_i32 ... ok
+test tests::range_tests::tests::pg_test_accept_range_numeric ... ok
+test tests::range_tests::tests::pg_test_empty_anynumeric_range ... ok
+test tests::proptests::tests::pg_date_literal_spi_roundtrip ... ok
+test tests::range_tests::tests::pg_test_accept_range_i64 ... ok
+test tests::proptests::tests::pg_time_literal_spi_roundtrip ... ok
+test tests::range_tests::tests::pg_test_accept_range_tstz ... ok
+test tests::range_tests::tests::pg_test_accept_range_date_array ... ok
+test tests::range_tests::tests::pg_test_accept_range_date ... ok
+test tests::proptests::tests::pg_time_spi_roundtrip ... ok
+test tests::proptests::tests::pg_timestamp_literal_spi_roundtrip ... ok
+test tests::range_tests::tests::pg_test_accept_range_ts ... ok
+test tests::proptests::tests::pg_date_spi_roundtrip ... ok
+test tests::proptests::tests::pg_timestamp_spi_roundtrip ... ok
+test tests::proptests::tests::pg_timetz_spi_roundtrip ... ok
+test tests::proptests::tests::pg_timetz_literal_spi_roundtrip ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_bounds ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_bounds_empty ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_bounds_full ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_bounds_inf ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_bounds_neg_inf_inf ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_bounds_neg_inf_val ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_bounds_neg_inf ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_values ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_bounds_val_inf ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_values_full ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_values_neg_inf_inf ... ok
+test tests::pg_try_tests::tests::pg_test_we_dont_blow_out_errdata_stack_size ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_values_neg_inf_val ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_values_inf ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_values_neg_inf ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_values_empty ... ok
+test tests::range_tests::tests::pg_test_range_i32_rt_bounds ... ok
+test tests::range_tests::tests::pg_test_range_date_rt_values_val_inf ... ok
+test tests::range_tests::tests::pg_test_range_i32_rt_values ... ok
+test tests::range_tests::tests::pg_test_range_i64_rt_values ... ok
+test tests::range_tests::tests::pg_test_range_num_rt_values ... ok
+test tests::range_tests::tests::pg_test_range_i64_rt_bounds ... ok
+test tests::range_tests::tests::pg_test_range_num_rt_bounds ... ok
+test tests::range_tests::tests::pg_test_range_ts_rt_bounds ... ok
+test tests::result_tests::tests::pg_test_proper_sql_errcode_from_error_report ... ok
+test tests::result_tests::tests::pg_test_custom_ereport ... ok
+test tests::range_tests::tests::pg_test_range_ts_rt_values ... ok
+test tests::result_tests::tests::pg_test_return_eyre_result ... ok
+test tests::result_tests::tests::pg_test_proper_sql_errcode ... ok
+test tests::result_tests::tests::pg_test_return_none_optional_result ... ok
+test tests::result_tests::tests::pg_test_return_result ... ok
+test tests::result_tests::tests::pg_test_return_io_error ... ok
+test tests::result_tests::tests::pg_test_return_result_set_of_error ... ok
+test tests::result_tests::tests::pg_test_return_result_set_of ... ok
+test tests::result_tests::tests::pg_test_return_eyre_result_error ... ok
+test tests::result_tests::tests::pg_test_return_result_table_iterator ... ok
+test tests::result_tests::tests::pg_test_return_result_table_iterator_error ... ok
+test tests::result_tests::tests::pg_test_return_some_error ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_anynumeric ... ok
+test tests::result_tests::tests::pg_test_return_some_optional_result ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_anynumeric ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_bool ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_box ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_f32 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_i32 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_date ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_i64 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_i16 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_f64 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_char ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_i8 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_complex ... ok
+test tests::rel_tests::tests::pg_test_accept_relation ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_interval ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_numeric ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_oid ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_time ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_string ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_point ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_timetz ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_bytea ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_uuid ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_tstz ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_ts ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_bool ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_char_1 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_array_random_data ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_char_3 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_char_2 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_char_4 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_box ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_char_0 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_char_5 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_char_7 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_cstr ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_complex ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_char_6 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_date ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_f32 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_i16 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_f64 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_refstr ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_i64 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_i32 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_oid ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_point ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_string ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_interval ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_numeric ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_i8 ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_random_data ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_time ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_uuid ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_timetz ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_ts ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_tstz ... ok
+test tests::roundtrip_tests::tests::pg_test_rt_xid ... ok
+test tests::schema_tests::tests::pg_custom_handwritten_to_sql_type ... ok
+test tests::schema_tests::tests::pg_custom_to_sql_type ... ok
+test tests::schema_tests::tests::pg_elided_extern_is_elided ... ok
+test tests::schema_tests::tests::pg_custom_to_sql_extern ... ok
+test tests::schema_tests::tests::pg_elided_type_is_elided ... ok
+test tests::schema_tests::tests::pg_test_in_different_schema2 ... ok
+test tests::schema_tests::tests::pg_test_type_in_different_schema ... ok
+test tests::shmem_tests::tests::pg_dsm_test_lock_is_released_on_unwind ... ok
+test tests::schema_tests::tests::pg_test_in_different_schema ... ok
+test tests::shmem_tests::tests::pg_dsm_test_lock_is_released_on_drop ... ok
+test tests::shmem_tests::tests::pg_scan_test_lock_is_released_on_drop ... ok
+test tests::shmem_tests::tests::pg_test_lock_is_released_on_drop ... ok
+test tests::shmem_tests::tests::pg_test_lock_is_released_on_unwind ... ok
+test tests::shmem_tests::tests::pg_test_spinlock ... ok
+test tests::spi_tests::tests::pg_spi_can_read_domain_types ... ok
+test tests::spi_tests::tests::pg_test_connect_return_anything ... ok
+test tests::spi_tests::tests::pg_spi_can_read_binary_coercible_types ... ok
+test tests::spi_tests::tests::pg_test_columns ... ok
+test tests::spi_tests::tests::pg_spi_can_read_domain_types_based_on_domain_types ... ok
+test tests::spi_tests::tests::pg_test_cursor_by_name ... ok
+test tests::spi_tests::tests::pg_test_cursor_not_found ... ok
+test tests::spi_tests::tests::pg_test_cursor_failure ... ok
+test tests::spi_tests::tests::pg_test_cursor ... ok
+test tests::spi_tests::tests::pg_can_return_borrowed_str ... ok
+test tests::spi_tests::tests::pg_test_cursor_prepared_statement ... ok
+test tests::spi_tests::tests::pg_test_execute_prepared_statement_in_readonly ... ok
+test tests::spi_tests::tests::pg_test_open_multiple_tuptables ... ok
+test tests::spi_tests::tests::pg_test_execute_prepared_statement_in_readwrite ... ok
+test tests::spi_tests::tests::pg_test_inserting_null ... ok
+test tests::spi_tests::tests::pg_test_owned_prepared_statement ... ok
+test tests::spi_tests::tests::pg_test_option ... ok
+test tests::spi_tests::tests::pg_test_open_multiple_tuptables_rev ... ok
+test tests::spi_tests::tests::pg_test_panic_via_spi ... ok
+test tests::spi_tests::tests::pg_test_prepared_statement_argument_mismatch ... ok
+test tests::spi_tests::tests::pg_test_prepared_statement ... ok
+test tests::spi_tests::tests::pg_test_quote_identifier ... ok
+test tests::spi_tests::tests::pg_test_quote_literal ... ok
+test tests::spi_tests::tests::pg_test_quote_qualified_identifier ... ok
+test tests::spi_tests::tests::pg_test_readwrite_in_readonly ... ok
+test tests::spi_tests::tests::pg_test_spi_explain ... ok
+test tests::spi_tests::tests::pg_test_readwrite_in_select_readwrite ... ok
+test tests::spi_tests::tests::pg_test_spi_can_nest ... ok
+test tests::spi_tests::tests::pg_test_spi_get_three ... ok
+test tests::spi_tests::tests::pg_test_spi_get_one ... ok
+test tests::spi_tests::tests::pg_test_spi_get_three_failure ... ok
+test tests::spi_tests::tests::pg_test_spi_explain_with_args ... ok
+test tests::spi_tests::tests::pg_test_spi_failure ... ok
+test tests::spi_tests::tests::pg_test_spi_get_two_with_failure ... ok
+test tests::sql_translatable_signature_tests::nested_vec_sql_translatable_metadata_fails_fast ... ok
+test tests::spi_tests::tests::pg_test_spi_get_two ... ok
+test tests::spi_tests::tests::pg_test_spi_non_mut ... ok
+test tests::spi_tests::tests::pg_test_spi_returns_primitive ... ok
+test tests::spi_tests::tests::pg_test_spi_run ... ok
+test tests::spi_tests::tests::pg_test_spi_returns_string ... ok
+test tests::spi_tests::tests::pg_test_spi_returns_str ... ok
+test tests::spi_tests::tests::pg_test_spi_run_with_args ... ok
+test tests::srf_tests::tests::pg_spi_in_iterator ... ok
+test tests::spi_tests::tests::pg_test_spi_select_zero_rows ... ok
+test tests::spi_tests::tests::pg_test_spi_select_sees_run ... ok
+test tests::spi_tests::tests::pg_test_spi_select_sees_update_in_other_session ... ok
+test tests::srf_tests::tests::pg_spi_in_setof ... ok
+test tests::spi_tests::tests::pg_test_spi_select_sees_update ... ok
+test tests::sql_translatable_signature_tests::tests::pg_signature_matrix_functions_are_installed ... ok
+test tests::srf_tests::tests::pg_test_composite_set ... ok
+test tests::srf_tests::tests::pg_test_result_table_2 ... ok
+test tests::srf_tests::tests::pg_test_result_table_1 ... ok
+test tests::srf_tests::tests::pg_test_result_table_5_none ... ok
+test tests::srf_tests::tests::pg_test_one_col_table ... ok
+test tests::srf_tests::tests::pg_test_generate_series ... ok
+test tests::srf_tests::tests::pg_test_result_table_4_err ... ok
+test tests::srf_tests::tests::pg_test_result_table_3 ... ok
+test tests::srf_tests::tests::pg_test_return_empty_iterator ... ok
+test tests::srf_tests::tests::pg_test_return_setof_iterator ... ok
+test tests::srf_tests::tests::pg_test_return_table_iterator ... ok
+test tests::srf_tests::tests::pg_test_return_empty_setof_iterator ... ok
+test tests::struct_type_tests::tests::pg_test_complex_out ... ok
+test tests::struct_type_tests::tests::pg_test_complex_from_text ... ok
+test tests::struct_type_tests::tests::pg_test_complex_in ... ok
+test tests::srf_tests::tests::pg_test_srf_setof_datum_detoasting_with_borrow ... ok
+test tests::type_ident_tests::custom_types_use_definition_site_type_idents ... ok
+test tests::type_ident_tests::representative_leaf_types_have_non_empty_distinct_type_idents ... ok
+test tests::type_ident_tests::skipped_virtual_types_stay_skipped ... ok
+test tests::type_ident_tests::table_iterators_keep_their_own_type_identity ... ok
+test tests::type_ident_tests::wrapper_types_forward_to_their_inner_type_ident ... ok
+test tests::type_ident_tests::wrapper_types_forward_type_origin ... ok
+test tests::trigger_tests::tests::pg_before_insert_field_update ... ok
+test tests::trigger_tests::tests::pg_before_insert_add_field ... ok
+test tests::trigger_tests::tests::pg_before_insert_has_sql_option_set ... ok
+test tests::trigger_tests::tests::pg_before_insert_noop_postgres ... ok
+test tests::trigger_tests::tests::pg_before_insert_metadata ... ok
+test tests::xact_callback_tests::tests::make_idea_happy ... ok
+test tests::srf_tests::tests::pg_test_srf_table_datum_detoasting_with_borrow ... ok
+test tests::trigger_tests::tests::pg_dont_delete ... ok
+test tests::uuid_tests::tests::pg_test_accept_uuid ... ok
+test tests::xid64_tests::tests::make_idea_happy ... ok
+test tests::trigger_tests::tests::pg_before_insert_metadata_safe ... ok
+test tests::trigger_tests::tests::pg_before_insert_noop_rust ... ok
+test tests::uuid_tests::tests::pg_test_parse_uuid_v4 ... ok
+test tests::uuid_tests::tests::pg_test_return_uuid ... ok
+test tests::uuid_tests::tests::pg_test_display_uuid ... ok
+test tests::variadic_tests::tests::pg_test_func_with_variadic_array_args ... ok
+test tests::xact_callback_tests::tests::pg_test_xact_callback ... ok
+test tests::trigger_tests::tests::pg_before_update_skip ... ok
+test tests::xid64_tests::tests::pg_test_convert_xid_to_u64 ... ok
+test tests::zero_datum_edge_cases::tests::pg_test_false_bool ... ok
+test tests::zero_datum_edge_cases::tests::pg_test_false_bool_is_some_false ... ok
+test tests::zero_datum_edge_cases::tests::pg_test_two_tuple_bool ... ok
+test tests::zero_datum_edge_cases::tests::pg_test_vec_ints ... ok
+test tests::zero_datum_edge_cases::tests::pg_test_vec_bool ... ok
+test tests::zero_datum_edge_cases::tests::pg_test_zero_i32 ... ok
+test tests::zero_datum_edge_cases::tests::pg_test_zero_i32_is_some_zero ... ok
+test tests::array_tests::tests::pg_test_arr_sort_uniq_with_null - should panic ... ok
+test tests::attributes_tests::tests::pg_test_for_should_panic_attribute - should panic ... ok
+test tests::fcinfo_tests::tests::pg_test_null_error_type - should panic ... ok
+test tests::fn_call_tests::tests::pg_fn_raises_error - should panic ... ok
+test tests::guc_tests::tests::pg_test_check_hook_fail - should panic ... ok
+test tests::guc_tests::tests::pg_test_guc_check_hook - should panic ... ok
+test tests::shmem_tests::tests::pg_dsm_test_behaves_normally_when_elog_while_holding_lock - should panic ... ok
+test tests::shmem_tests::tests::pg_test_behaves_normally_when_elog_while_holding_lock - should panic ... ok
+test tests::spi_tests::tests::pg_test_cursor_prepared_statement_panics_more_args - should panic ... ok
+test tests::spi_tests::tests::pg_test_cursor_prepared_statement_panics_less_args - should panic ... ok
+test tests::shmem_tests::tests::pg_scan_test_behaves_normally_when_elog_while_holding_lock - should panic ... ok
+test tests::shmem_tests::tests::pg_scan_test_lock_is_released_on_unwind ... FAILED
+test tests::struct_type_tests::tests::pg_test_complex_storage_and_retrieval ... FAILED
+
+failures:
+
+---- tests::shmem_tests::tests::pg_scan_test_lock_is_released_on_unwind stdout ----
+
+thread 'tests::shmem_tests::tests::pg_scan_test_lock_is_released_on_unwind' (1923615) panicked at pgrx-tests/src/framework.rs:195:9:
+
+
+Postgres Messages:
+[2026-06-08 00:29:47.686 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  starting PostgreSQL 16.8 on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.5.0-6ubuntu2) 9.5.0, 64-bit
+[2026-06-08 00:29:47.686 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  listening on IPv4 address "127.0.0.1", port 33843
+[2026-06-08 00:29:47.696 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  listening on Unix socket "/home/fkomauli/projects/other/pgrx/target/test-pgdata/.s.PGSQL.33843"
+[2026-06-08 00:29:47.713 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  database system is ready to accept connections
+[2026-06-08 00:29:48.473 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  server process (PID 1923625) was terminated by signal 6: Aborted
+[2026-06-08 00:29:48.473 CEST] [1920621] [6a25f0db.1d4e6d]: DETAIL:  Failed process was running: SELECT "tests"."scan_test_behaves_normally_when_elog_while_holding_lock"();
+[2026-06-08 00:29:48.473 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  terminating any other active server processes
+[2026-06-08 00:29:48.475 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  all server processes terminated; reinitializing
+
+
+Test Function Messages:
+[2026-06-08 00:29:48.262 CEST] [1923627] [6a25f0dc.1d5a2b]: LOG:  statement: START TRANSACTION
+[2026-06-08 00:29:48.262 CEST] [1923627] [6a25f0dc.1d5a2b]: LOG:  statement: SELECT "tests"."scan_test_lock_is_released_on_unwind"();
+
+
+Client Error:
+connection closed
+postgres location: <unknown>
+rust location: <unknown>
+
+
+
+---- tests::struct_type_tests::tests::pg_test_complex_storage_and_retrieval stdout ----
+
+thread 'tests::struct_type_tests::tests::pg_test_complex_storage_and_retrieval' (1924088) panicked at pgrx-tests/src/framework.rs:195:9:
+
+
+Postgres Messages:
+[2026-06-08 00:29:47.686 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  starting PostgreSQL 16.8 on x86_64-pc-linux-gnu, compiled by gcc (Ubuntu 9.5.0-6ubuntu2) 9.5.0, 64-bit
+[2026-06-08 00:29:47.686 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  listening on IPv4 address "127.0.0.1", port 33843
+[2026-06-08 00:29:47.696 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  listening on Unix socket "/home/fkomauli/projects/other/pgrx/target/test-pgdata/.s.PGSQL.33843"
+[2026-06-08 00:29:47.713 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  database system is ready to accept connections
+[2026-06-08 00:29:48.473 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  server process (PID 1923625) was terminated by signal 6: Aborted
+[2026-06-08 00:29:48.473 CEST] [1920621] [6a25f0db.1d4e6d]: DETAIL:  Failed process was running: SELECT "tests"."scan_test_behaves_normally_when_elog_while_holding_lock"();
+[2026-06-08 00:29:48.473 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  terminating any other active server processes
+[2026-06-08 00:29:48.475 CEST] [1920621] [6a25f0db.1d4e6d]: LOG:  all server processes terminated; reinitializing
+
+
+Test Function Messages:
+[2026-06-08 00:29:48.323 CEST] [1924117] [6a25f0dc.1d5c15]: LOG:  statement: START TRANSACTION
+[2026-06-08 00:29:48.323 CEST] [1924117] [6a25f0dc.1d5c15]: LOG:  statement: SELECT "tests"."test_complex_storage_and_retrieval"();
+
+
+Client Error:
+connection closed
+postgres location: <unknown>
+rust location: <unknown>
+
+
+
+
+failures:
+    tests::shmem_tests::tests::pg_scan_test_lock_is_released_on_unwind
+    tests::struct_type_tests::tests::pg_test_complex_storage_and_retrieval
+
+test result: FAILED. 566 passed; 2 failed; 1 ignored; 0 measured; 0 filtered out; finished in 20.81s
+
+error: test failed, to rerun pass `-p pgrx-unit-tests --lib`
