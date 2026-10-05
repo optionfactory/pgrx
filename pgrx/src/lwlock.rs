@@ -206,9 +206,9 @@ unsafe fn release_unless_elog_unwinding(lock: *mut crate::pg_sys::LWLock) {
 
 /// LWLock for dynamic shared memory (DSM).
 pub mod dsm {
+    use crate::lwlock::AddinShmemInitLock;
     use std::cell::UnsafeCell;
     use std::ffi::{c_int, c_void, CStr};
-    use crate::lwlock::AddinShmemInitLock;
 
     /// A PostgreSQL LWLock-backed locking mechanism for dynamic shared memory (DSM).
     ///
@@ -256,7 +256,6 @@ pub mod dsm {
     }
 
     impl<T: crate::PGRXSharedMemory> DsmLwLock<T> {
-
         /// Memory size in bytes required to store a lock instance, along its wrapped value.
         pub const fn mem_size() -> usize {
             size_of::<DsmLwLock<T>>()
@@ -293,7 +292,6 @@ pub mod dsm {
     }
 
     impl<T> DsmLwLockHandle<T> {
-
         /// Obtain a shared lock (which comes with `&T` access).
         pub fn shared(&self) -> super::PgLwLockShareGuard<'_, T> {
             assert!(!self.handle.is_null(), "unregistered DSM LWLock handle");
@@ -301,7 +299,9 @@ pub mod dsm {
                 let lock_ptr = (&raw mut (*self.handle).lock);
                 crate::pg_sys::LWLockAcquire(lock_ptr, crate::pg_sys::LWLockMode::LW_SHARED);
                 super::PgLwLockShareGuard {
-                    data: (&raw const (*self.handle).data).as_ref().expect("Unexpected null raw pointer to field"),
+                    data: (&raw const (*self.handle).data)
+                        .as_ref()
+                        .expect("Unexpected null raw pointer to field"),
                     lock: lock_ptr,
                 }
             }
@@ -314,7 +314,9 @@ pub mod dsm {
                 let lock_ptr = (&raw mut (*self.handle).lock);
                 crate::pg_sys::LWLockAcquire(lock_ptr, crate::pg_sys::LWLockMode::LW_EXCLUSIVE);
                 super::PgLwLockExclusiveGuard {
-                    data: (&raw mut (*self.handle).data).as_mut().expect("Unexpected null raw pointer to field"),
+                    data: (&raw mut (*self.handle).data)
+                        .as_mut()
+                        .expect("Unexpected null raw pointer to field"),
                     lock: lock_ptr,
                 }
             }
@@ -373,7 +375,6 @@ pub mod dsm {
     unsafe impl Sync for DsmLwLockTranche {}
 
     impl DsmLwLockTranche {
-
         /// Define a LWLock tranche, along with the tranche name that backends will associate locks
         /// to when created from this tranche.
         pub const fn new(name: &'static CStr) -> Self {
@@ -410,7 +411,10 @@ pub mod dsm {
         /// * `dsm` must have at least [DsmLwLock::mem_size] space.
         /// * `data` must not be null.
         /// * `data` must not point to an address inside the `dsm` memory allocation.
-        pub unsafe fn init<T>(&self, dsm: *mut c_void, data: *const T) where T: crate::PGRXSharedMemory {
+        pub unsafe fn init<T>(&self, dsm: *mut c_void, data: *const T)
+        where
+            T: crate::PGRXSharedMemory,
+        {
             DsmLwLock::<T>::init(dsm, self.tranche_id(), data)
         }
 
@@ -420,13 +424,15 @@ pub mod dsm {
         ///
         /// * `dsm` was already initialized with [Self::init] (and therefore all its safety
         ///   requirements are met).
-        pub unsafe fn register<T>(&self, dsm: *mut c_void) -> DsmLwLockHandle<T> where T: crate::PGRXSharedMemory {
+        pub unsafe fn register<T>(&self, dsm: *mut c_void) -> DsmLwLockHandle<T>
+        where
+            T: crate::PGRXSharedMemory,
+        {
             DsmLwLock::<T>::register(dsm, self.name)
         }
     }
 
     impl crate::PgSharedMemoryInitialization for DsmLwLockTranche {
-
         type Value = ();
 
         unsafe fn on_shmem_request(&'static self) {
@@ -445,11 +451,11 @@ pub mod dsm {
 
 /// LWLock for dynamic shared memory (DSM) during parallel foreign scans.
 pub mod scan {
+    use super::dsm::{DsmLwLock, DsmLwLockHandle, DsmLwLockTranche};
     use std::borrow::{Borrow, BorrowMut};
     use std::ffi::{c_void, CStr};
     use std::ops::{Deref, DerefMut};
     use std::panic::AssertUnwindSafe;
-    use super::dsm::{DsmLwLock, DsmLwLockHandle, DsmLwLockTranche};
 
     enum ParallelScanSharedState<T, A> {
         Local(A),
@@ -611,7 +617,10 @@ pub mod scan {
     ///     // before the DSM segment is destroyed. Look at FDW callbacks documentation for more info.
     /// }
     /// ```
-    pub struct ParallelScanLwLock<T, A = T> where A: BorrowMut<T> {
+    pub struct ParallelScanLwLock<T, A = T>
+    where
+        A: BorrowMut<T>,
+    {
         tranche: AssertUnwindSafe<&'static DsmLwLockTranche>,
         data: ParallelScanSharedState<T, A>,
     }
@@ -666,8 +675,10 @@ pub mod scan {
         }
     }
 
-    impl<T, A> ParallelScanLwLock<T, A> where A: BorrowMut<T> {
-
+    impl<T, A> ParallelScanLwLock<T, A>
+    where
+        A: BorrowMut<T>,
+    {
         /// Constructs a new LWLock, given a tranche and an initial value (or a box type from which
         /// you can [BorrowMut] it).
         pub fn new(tranche: &'static DsmLwLockTranche, value: A) -> Self {
@@ -677,22 +688,32 @@ pub mod scan {
         /// Obtain a shared lock (which comes with `&T` access).
         pub fn shared(&self) -> ParallelScanLwLockShareGuard<'_, T> {
             match &self.data {
-                ParallelScanSharedState::Local(value) => ParallelScanLwLockShareGuard::Local(value.borrow()),
-                ParallelScanSharedState::Shared(handle) => ParallelScanLwLockShareGuard::Shared(handle.shared()),
+                ParallelScanSharedState::Local(value) => {
+                    ParallelScanLwLockShareGuard::Local(value.borrow())
+                }
+                ParallelScanSharedState::Shared(handle) => {
+                    ParallelScanLwLockShareGuard::Shared(handle.shared())
+                }
             }
         }
 
         /// Obtain an exclusive lock (which comes with `&mut T` access).
         pub fn exclusive(&mut self) -> ParallelScanLwLockExclusiveGuard<'_, T> {
             match &mut self.data {
-                ParallelScanSharedState::Local(value) => ParallelScanLwLockExclusiveGuard::Local(value.borrow_mut()),
-                ParallelScanSharedState::Shared(handle) => ParallelScanLwLockExclusiveGuard::Shared(handle.exclusive()),
+                ParallelScanSharedState::Local(value) => {
+                    ParallelScanLwLockExclusiveGuard::Local(value.borrow_mut())
+                }
+                ParallelScanSharedState::Shared(handle) => {
+                    ParallelScanLwLockExclusiveGuard::Shared(handle.exclusive())
+                }
             }
         }
     }
 
-    impl<T: crate::PGRXSharedMemory, A> ParallelScanLwLock<T, A> where A: BorrowMut<T> {
-
+    impl<T: crate::PGRXSharedMemory, A> ParallelScanLwLock<T, A>
+    where
+        A: BorrowMut<T>,
+    {
         pub const fn mem_size() -> usize {
             DsmLwLock::<T>::mem_size()
         }
@@ -713,10 +734,10 @@ pub mod scan {
                 ParallelScanSharedState::Local(value) => {
                     self.tranche.init(dsm, <A as Borrow<T>>::borrow(value) as *const T);
                     self.data = ParallelScanSharedState::Shared(self.tranche.register(dsm));
-                },
+                }
                 ParallelScanSharedState::Shared(_) => {
                     panic!("DSM LWLock already initialized");
-                },
+                }
             }
         }
 
@@ -738,7 +759,6 @@ pub mod scan {
     pub struct ParallelScanLwLockTranche(DsmLwLockTranche);
 
     impl ParallelScanLwLockTranche {
-
         /// Define a LWLock tranche, along with the tranche name that backends will associate locks
         /// to when created from this tranche.
         pub const fn new(name: &'static CStr) -> Self {
@@ -749,7 +769,7 @@ pub mod scan {
         pub fn lock_for<T, A>(&'static self, value: A) -> ParallelScanLwLock<T, A>
         where
             T: crate::PGRXSharedMemory,
-            A: BorrowMut<T>
+            A: BorrowMut<T>,
         {
             ParallelScanLwLock::new(&self.0, value)
         }

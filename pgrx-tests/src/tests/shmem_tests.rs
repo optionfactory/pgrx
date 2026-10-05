@@ -7,13 +7,13 @@
 //LICENSE All rights reserved.
 //LICENSE
 //LICENSE Use of this source code is governed by the MIT license that can be found in the LICENSE file.
-use pgrx::prelude::*;
-use pgrx::{pg_shmem_init, PgAtomic, PgLwLock};
-use std::sync::atomic::AtomicBool;
 use pgrx::lwlock::dsm::{DsmLwLock, DsmLwLockTranche};
 use pgrx::lwlock::scan::{ParallelScanLwLock, ParallelScanLwLockTranche};
+use pgrx::prelude::*;
 #[cfg(feature = "cshim")]
 use pgrx::spinlock::PgSpinLock;
+use pgrx::{pg_shmem_init, PgAtomic, PgLwLock};
+use std::sync::atomic::AtomicBool;
 
 static ATOMIC: PgAtomic<AtomicBool> = unsafe { PgAtomic::new(c"pgrx_tests_atomic") };
 static LWLOCK: PgLwLock<bool> = unsafe { PgLwLock::new(c"pgrx_tests_lwlock") };
@@ -22,9 +22,12 @@ static LWLOCK: PgLwLock<bool> = unsafe { PgLwLock::new(c"pgrx_tests_lwlock") };
 static SPINLOCK: PgAtomic<PgSpinLock<usize>> = unsafe { PgAtomic::new(c"pgrx_tests_spinlock") };
 
 static DSMLWLOCK: DsmLwLockTranche = DsmLwLockTranche::new(c"pgrx_tests_dsm_lwlock");
-static DSMLWLOCKMEM: TestDSM = unsafe { TestDSM::new(DsmLwLock::<bool>::mem_size(), c"pgrx_tests_dsm_lwlock_mem") };
-static SCANLWLOCK: ParallelScanLwLockTranche = ParallelScanLwLockTranche::new(c"pgrx_tests_scan_lwlock");
-static SCANLWLOCKMEM: TestDSM = unsafe { TestDSM::new(ParallelScanLwLock::<bool>::mem_size(), c"pgrx_tests_scan_lwlock_mem") };
+static DSMLWLOCKMEM: TestDSM =
+    unsafe { TestDSM::new(DsmLwLock::<bool>::mem_size(), c"pgrx_tests_dsm_lwlock_mem") };
+static SCANLWLOCK: ParallelScanLwLockTranche =
+    ParallelScanLwLockTranche::new(c"pgrx_tests_scan_lwlock");
+static SCANLWLOCKMEM: TestDSM =
+    unsafe { TestDSM::new(ParallelScanLwLock::<bool>::mem_size(), c"pgrx_tests_scan_lwlock_mem") };
 
 #[pg_guard]
 pub extern "C-unwind" fn _PG_init() {
@@ -95,9 +98,9 @@ mod tests {
     #[allow(unused_imports)]
     use crate as pgrx_tests;
 
-    use pgrx::prelude::*;
     use pgrx::lwlock::dsm::DsmLwLockHandle;
     use pgrx::lwlock::scan::ParallelScanLwLock;
+    use pgrx::prelude::*;
 
     #[pg_test]
     #[should_panic(expected = "cache lookup failed for type 0")]
@@ -139,7 +142,6 @@ mod tests {
         }
     }
 
-
     fn init_dsm_lwlock() -> DsmLwLockHandle<bool> {
         use super::{DSMLWLOCK, DSMLWLOCKMEM};
         let data: bool = false;
@@ -177,12 +179,13 @@ mod tests {
         let _lock = handle.exclusive();
     }
 
-
     fn init_scan_lwlock() -> ParallelScanLwLock<bool> {
         use super::{SCANLWLOCK, SCANLWLOCKMEM};
         let data: bool = false;
         let mut lock = SCANLWLOCK.lock_for(data);
-        unsafe { lock.initialize_dsm_and_register_leader(SCANLWLOCKMEM.mem()); }
+        unsafe {
+            lock.initialize_dsm_and_register_leader(SCANLWLOCKMEM.mem());
+        }
         lock
     }
 
