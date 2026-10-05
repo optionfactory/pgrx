@@ -436,14 +436,25 @@ pub mod dsm {
         type Value = ();
 
         unsafe fn on_shmem_request(&'static self) {
-            // Nothing to do here
+            crate::pg_sys::RequestAddinShmemSpace(size_of::<c_int>());
         }
 
         unsafe fn on_shmem_startup(&'static self, _value: Self::Value) {
             let addin_shmem_init_lock = AddinShmemInitLock::exclusive();
-            if (*self.lock.get()).is_none() {
-                *self.lock.get() = Some(new_lwlock_tranche_id());
+
+            // Looking up the tranche id in shared memory to guarantee that it is requested once
+            // per shared memory lifetime, by the first process running the hook (the postmaster),
+            // and reused by every backend.
+            // On platforms where PostgreSQL is built with `EXEC_BACKEND` (e.g. Windows), backends
+            // are spawned as new processes that run `_PG_init()` and the shmem startup hook again:
+            // without this, every backend would request its own tranche id until we exhaust them.
+            let mut found = false;
+            let shared_tranche_id = crate::pg_sys::ShmemInitStruct(self.name.as_ptr(), size_of::<c_int>(), &mut found).cast::<c_int>();
+            if !found {
+                shared_tranche_id.write(new_lwlock_tranche_id());
             }
+
+            *self.lock.get() = Some(shared_tranche_id.read());
             drop(addin_shmem_init_lock);
         }
     }
